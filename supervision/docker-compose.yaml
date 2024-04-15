@@ -8,14 +8,26 @@ volumes:
 services:
   loki:
     image: grafana/loki:2.9.0
+    container_name: supervision-loki
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
 
   grafana:
     image: grafana/grafana:9.1.6
+    container_name: supervision-grafana
     volumes:
       - grafana-data:/var/lib/grafana/
+    env_file:
+      - stack.env
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -53,9 +65,18 @@ services:
         /run.sh
     ports:
       - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
 
   prometheus:
     image: prom/prometheus:v2.27.0
+    container_name: supervision-prometheus
     restart: always
     ports:
       - "9090:9090"
@@ -67,3 +88,11 @@ services:
         '--config.file=/etc/prometheus/prometheus.yml',
         '--storage.tsdb.retention.time=90d'
       ]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.1'
+          memory: 50M
