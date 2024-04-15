@@ -9,6 +9,7 @@ services:
   loki:
     image: grafana/loki:2.9.0
     container_name: loki
+    restart: always
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -96,3 +97,20 @@ services:
         reservations:
           cpus: '0.1'
           memory: 50M
+
+  vmware_exporter:
+    image: pryorda/vmware_exporter:latest
+    container_name: vmware_exporter
+    restart: always
+    env_file:
+      - stack.env
+    ports:
+      - "9272:9272"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
