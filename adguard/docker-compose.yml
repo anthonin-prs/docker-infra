@@ -1,0 +1,26 @@
+version: "3.8"
+
+volumes:
+  adguard-data:
+  adguard-config:
+
+services:
+  adguard:
+    image: adguard/adguardhome:latest
+    restart: always
+    container_name: adguard
+    ports:
+      - "53:53"
+      - "3080:3000"
+
+    volumes:
+      - adguard-data:/opt/adguardhome/work
+      - adguard-config:/opt/adguardhome/conf
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
