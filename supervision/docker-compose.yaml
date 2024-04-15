@@ -8,7 +8,7 @@ volumes:
 services:
   loki:
     image: grafana/loki:2.9.0
-    container_name: supervision-loki
+    container_name: loki
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -23,7 +23,7 @@ services:
 
   grafana:
     image: grafana/grafana:9.1.6
-    container_name: supervision-grafana
+    container_name: grafana
     volumes:
       - grafana-data:/var/lib/grafana/
     env_file:
@@ -46,12 +46,12 @@ services:
           orgId: 1
           url: http://loki:3100
           basicAuth: false
-          isDefault: true
           version: 1
           editable: false
         - name: Prometheus
           type: prometheus
           access: proxy
+          isDefault: true
           url: http://prometheus:9090
           jsonData:
             httpMethod: POST
@@ -76,7 +76,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.27.0
-    container_name: supervision-prometheus
+    container_name: prometheus
     restart: always
     ports:
       - "9090:9090"
