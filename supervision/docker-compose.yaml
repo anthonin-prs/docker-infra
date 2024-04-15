@@ -104,8 +104,23 @@ services:
     restart: always
     env_file:
       - stack.env
-    ports:
-      - "9272:9272"
+#    ports:
+#      - "9272:9272"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  blackbox_exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: blackbox_exporter
+    restart: always
+#    ports:
+#      - "9115:9115"
     deploy:
       resources:
         limits:
