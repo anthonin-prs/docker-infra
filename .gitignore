@@ -2,3 +2,4 @@
 !*.secret
 supervision/.env
 adguard/AdGuardHome.yaml
+web/.env
