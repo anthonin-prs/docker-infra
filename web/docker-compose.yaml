@@ -97,8 +97,8 @@ services:
   access-pc-gestion:
     <<: *service_default
     container_name: access-pc-gestion
-    ports:
-      - "8091:8080"
+    # ports:
+    #   - "8091:8080"
     volumes:
       - access_pc-gestion-data:/var/www/html
       - private:/var/www/private
