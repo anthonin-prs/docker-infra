@@ -1,9 +1,35 @@
 version: "3.8"
 
 volumes:
+  nginx-data:
+  nginx-certs:
   mariadb-data:
+  access_pc-data:
+  private:
 
 services:
+  nginx:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - nginx-data:/data
+      - nginx-certs:/etc/letsencrypt
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.2'
+          memory: 100M
+
   database:
     image: mariadb:latest
     container_name: database
@@ -46,4 +72,22 @@ services:
           cpus: '0.1'
           memory: 20M
 
-  
+  access-pc: &service_default
+    image: apresse/php_fpm_pdo_nginx:latest
+    container_name: access-pc
+    restart: always
+    # ports:
+    #   - "8080:8080"
+    volumes:
+      - access_pc-data:/var/www/html
+      - private:/var/www/private
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.2'
+          memory: 100M
