@@ -11,6 +11,9 @@ volumes:
   signature-generator-data:
   anthonin-fr-data:
   ebenolt-com-data:
+  ip-ebe-data:
+  sutom-data:
+  wol-ebe-data:
 
 services:
   nginx:
@@ -78,7 +81,7 @@ services:
           memory: 20M
 
   access-pc: &service_default
-    image: apresse/php_fpm_pdo_nginx:0.6
+    image: apresse/php_fpm_pdo_nginx:0.7
     container_name: access-pc
     restart: always
     # ports:
@@ -140,3 +143,27 @@ services:
     #   - "8091:8080"
     volumes:
       - ebenolt-com-data:/var/www/html
+      
+  ip-ebe:
+    <<: *service_default
+    container_name: ip-ebe
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - ip-ebe-data:/var/www/html
+
+  sutom:
+    <<: *service_default
+    container_name: sutom
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - sutom-data:/var/www/html
+
+  wol-ebe:
+    <<: *service_default
+    container_name: wol-ebe
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - wol-ebe-data:/var/www/html
