@@ -6,6 +6,8 @@ volumes:
   mariadb-data:
   access_pc-data:
   private:
+  access_pc-gestion-data:
+  access_pc-clients-data:
 
 services:
   nginx:
@@ -73,7 +75,7 @@ services:
           memory: 20M
 
   access-pc: &service_default
-    image: apresse/php_fpm_pdo_nginx:latest
+    image: apresse/php_fpm_pdo_nginx:0.6
     container_name: access-pc
     restart: always
     # ports:
@@ -91,3 +93,22 @@ services:
         reservations:
           cpus: '0.2'
           memory: 100M
+  
+  access-pc-gestion:
+    <<: *service_default
+    container_name: access-pc-gestion
+    ports:
+      - "8091:8080"
+    volumes:
+      - access_pc-gestion-data:/var/www/html
+      - private:/var/www/private
+    
+
+  access-pc-clients:
+    <<: *service_default
+    container_name: access-pc-clients
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - access_pc-clients-data:/var/www/html
+      - private:/var/www/private
