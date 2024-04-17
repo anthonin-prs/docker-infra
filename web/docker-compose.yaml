@@ -163,6 +163,7 @@ services:
   wol-ebe:
     <<: *service_default
     container_name: wol-ebe
+    network_mode: host
     # ports:
     #   - "8091:8080"
     volumes:
