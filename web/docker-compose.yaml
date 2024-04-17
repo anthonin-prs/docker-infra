@@ -8,6 +8,9 @@ volumes:
   private:
   access_pc-gestion-data:
   access_pc-clients-data:
+  signature-generator-data:
+  anthonin-fr-data:
+  ebenolt-com-data:
 
 services:
   nginx:
@@ -112,3 +115,28 @@ services:
     volumes:
       - access_pc-clients-data:/var/www/html
       - private:/var/www/private
+
+
+  signature-generator:
+    <<: *service_default
+    container_name: signature-generator
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - signature-generator-data:/var/www/html
+
+  anthonin-fr:
+    <<: *service_default
+    container_name: anthonin-fr
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - anthonin-fr-data:/var/www/html
+
+  ebenolt-com:
+    <<: *service_default
+    container_name: ebenolt-com
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - ebenolt-com-data:/var/www/html
