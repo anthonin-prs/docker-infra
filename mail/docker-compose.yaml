@@ -1,0 +1,32 @@
+version: "3.8"
+
+volumes:
+  mail-data:
+
+services:
+  mailserver:
+    image: analogic/poste.io:latest
+    container_name: mailserver
+    restart: always
+    ports:
+      - "25:25"
+      - "7080:80"
+      - "7443:443"
+      - "110:110"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+    volumes:
+      - mail-data:/data
+    environment:
+      - TZ=Europe/Paris
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+          memory: 5000M
+        reservations:
+          cpus: '1.5'
+          memory: 3500M
