@@ -137,6 +137,7 @@ services:
       - 3001:3001
     volumes:
     - uptime_kuma-data:/app/data
+    - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       resources:
         limits:
