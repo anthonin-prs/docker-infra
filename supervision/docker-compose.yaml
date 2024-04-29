@@ -4,6 +4,7 @@ volumes:
   prometheus-data:
   prometheus-config:
   grafana-data:
+  uptime_kuma-data:
 
 services:
   loki:
@@ -124,6 +125,24 @@ services:
         limits:
           cpus: '0.2'
           memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  uptime_kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime_kuma
+    restart: always
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 250M
         reservations:
           cpus: '0.1'
           memory: 20M
