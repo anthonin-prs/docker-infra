@@ -129,20 +129,40 @@ services:
           cpus: '0.1'
           memory: 20M
 
-  uptime_kuma:
+  uptime-kuma:
     image: louislam/uptime-kuma:1
-    container_name: uptime_kuma
+    container_name: uptime-kuma
     restart: always
     ports:
-      - "3001:3001"
+      - 3001:3001
     volumes:
-      - uptime_kuma-data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock
+    - uptime_kuma-data:/app/data
+    - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       resources:
         limits:
           cpus: '0.3'
           memory: 250M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: always
+    # ports:
+    # - 8091:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
         reservations:
           cpus: '0.1'
           memory: 20M

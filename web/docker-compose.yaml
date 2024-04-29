@@ -14,6 +14,7 @@ volumes:
   ip-ebe-data:
   sutom-data:
   wol-ebe-data:
+  share-data:
 
 services:
   nginx:
@@ -168,3 +169,30 @@ services:
       - "8080:8080"
     volumes:
       - wol-ebe-data:/var/www/html
+
+  share-ssh-server:
+    image: linuxserver/openssh-server
+    container_name: ssh-server
+    restart: always
+    ports:
+      - "222:2222"
+    env_file:
+      - stack.env
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=Etc/UTC
+      - SUDO_ACCESS=true
+      # - PASSWORD_ACCESS=true
+      # - USER_PASSWORD=password
+      - USER_NAME=ebenolt
+    volumes:
+      - share-data:/mnt/data
+
+  web:
+    <<: *service_default
+    container_name: web
+    ports:
+      - "8082:8080"
+    volumes:
+      - share-data:/var/www/html:ro

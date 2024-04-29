@@ -1,0 +1,28 @@
+version: "3.8"
+
+volumes:
+  homebridge-data:
+
+services:
+  homebridge:
+    image: homebridge/homebridge:no-avahi
+    container_name: homebridge
+    restart: always
+    network_mode: host
+    ports:
+      - "8581:8581"
+    volumes:
+      - homebridge-data:/homebridge
+    logging:
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 2000M
+        reservations:
+          cpus: '0.4'
+          memory: 300M
