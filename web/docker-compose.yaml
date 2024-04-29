@@ -189,7 +189,7 @@ services:
     volumes:
       - share-data:/mnt/data
 
-  web:
+  share-web:
     <<: *service_default
     container_name: web
     ports:
