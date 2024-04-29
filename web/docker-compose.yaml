@@ -191,7 +191,7 @@ services:
 
   share-web:
     <<: *service_default
-    container_name: web
+    container_name: share-web
     # ports:
     #   - "8081:8080"
     volumes:
