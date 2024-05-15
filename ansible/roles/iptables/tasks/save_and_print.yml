@@ -1,0 +1,12 @@
+- name: Get current iptables conf
+  ansible.builtin.command: iptables -L
+  become: yes
+  register: iptables
+
+- name: Print iptables
+  ansible.builtin.debug:
+    msg: "{{ iptables.stdout_lines }}"
+
+- name: Save iptables conf
+  ansible.builtin.command: iptables-save -f /etc/iptables/rules.v4
+  become: yes

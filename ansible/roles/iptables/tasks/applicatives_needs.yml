@@ -1,0 +1,51 @@
+- name: Allow SSH
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: 22
+    jump: ACCEPT
+    source: "{{ item }}"
+  with_items:
+    - 0.0.0.0/0
+
+- name: Allow Web
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    source: 0.0.0.0/0
+  with_items:
+    - 443
+    - 80
+
+- name: Allow Mails
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    source: 0.0.0.0/0
+  with_items:
+    - 25
+    - 110
+    - 143
+    - 465
+    - 587
+    - 993
+    - 995
+
+- name: Allow SSH Share
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    source: 0.0.0.0/0
+  with_items:
+    - 222

@@ -1,0 +1,31 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: {{ loki_url }}
+    basic_auth:
+      username: {{ promtail_basic_username }}
+      password: {{ promtail_basic_pasword }}
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          host: {{ ansible_facts['hostname'] }}
+          __path__: /var/log/*log
+
+  - job_name: postgres
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: postgres
+          host: {{ ansible_facts['hostname'] }}
+          __path__: /var/log/postgresql/*log

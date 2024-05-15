@@ -1,0 +1,24 @@
+---
+# tasks file for iptables
+- name: Flush iptables
+  ansible.builtin.include_tasks: flush.yml
+
+- name: Defaults
+  ansible.builtin.include_tasks: defaults.yml
+
+- name: Applicatives needs
+  ansible.builtin.include_tasks: applicatives_needs.yml
+
+- name: Established and loopback
+  ansible.builtin.include_tasks: established_and_loopback.yml
+
+- name: Block other
+  ansible.builtin.include_tasks: other.yml
+
+- name: Save and print
+  ansible.builtin.include_tasks: save_and_print.yml
+
+- name: Restart docker
+  service:
+    name: "docker"
+    state: restarted

@@ -3,3 +3,6 @@
 supervision/.env
 adguard/AdGuardHome.yaml
 web/.env
+ansible/roles/system-prep/files/SSH/Perso_SSH
+ansible/roles/system-prep/files/SSH/Perso_SSH.pub
+ansible/group_vars/VPS.yml

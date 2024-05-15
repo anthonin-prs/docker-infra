@@ -1,0 +1,33 @@
+- name: Allow OUT
+  ansible.builtin.iptables:
+    chain: OUTPUT
+    protocol: "{{ item }}"
+    jump: ACCEPT
+  with_items:
+    - tcp
+    - udp
+
+- name: Allow ping
+  ansible.builtin.iptables:
+    chain: "{{ item }}"
+    protocol: icmp
+    jump: ACCEPT
+  with_items:
+    - INPUT
+    - OUTPUT
+
+- name: Allow DNS
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: "{{ item }}"
+    jump: ACCEPT
+    source_port: 53
+  with_items:
+    - tcp
+    - udp
+
+- name: Drop invalid connection
+  ansible.builtin.iptables:
+    chain: INPUT
+    ctstate: INVALID
+    jump: ACCEPT

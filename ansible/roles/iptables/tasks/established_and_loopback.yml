@@ -1,0 +1,29 @@
+- name: Allow Established and Related IN
+  ansible.builtin.iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    protocol: TCP
+    jump: ACCEPT
+  become: yes
+
+- name: Allow Established OUT
+  ansible.builtin.iptables:
+    chain: OUTPUT
+    ctstate: ESTABLISHED
+    protocol: TCP
+    jump: ACCEPT
+  become: yes
+
+- name: Allow Loopback IN
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+  become: yes
+
+- name: Allow Loopback OUT
+  ansible.builtin.iptables:
+    chain: OUTPUT
+    out_interface: lo
+    jump: ACCEPT
+  become: yes
