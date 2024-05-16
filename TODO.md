@@ -3,16 +3,19 @@
 ## Ansible
 
 ## VPS
-- Restart Instances
 
 ## Applications
-- Restore Mails
+- Grafana restore
+- Prometheus Federation
 
 ## Other
-- DNS rebind
-- Whitelists mails IPs 
+- Home VPN
 
 ### Done
+- Whitelists mails IPs 
+- Restart Instances
+- DNS rebind
+- Restore Mails
 - Restore Prometheus
 - Restore Grafana
 - Restore Uptime kuma
