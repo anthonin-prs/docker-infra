@@ -5,13 +5,14 @@
 ## VPS
 
 ## Applications
-- Grafana restore
 - Prometheus Federation
 
 ## Other
 - Home VPN
+- Home Portainer
 
 ### Done
+- Grafana restore
 - Whitelists mails IPs 
 - Restart Instances
 - DNS rebind
