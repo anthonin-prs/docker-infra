@@ -1,0 +1,32 @@
+---
+- name: Init gpg
+  command: >
+    gpg --list-keys
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Copy GPG key
+  copy:
+    src: "files/GPG/GPG_Perso.asc"
+    dest: "~/GPG_Perso.asc"
+    owner: "{{ final_user }}"
+    group: "{{ final_user }}"
+    mode: 0700
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Import gpg private key
+  command: >
+    gpg --batch
+        --passphrase {{ gpg_passphrase }} 
+        --pinentry-mode loopback
+        --import ~/GPG_Perso.asc
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Remove GPG key
+  ansible.builtin.file:
+    path: ~/GPG_Perso.asc
+    state: absent
+  become: true
+  become_user: "{{ final_user }}"

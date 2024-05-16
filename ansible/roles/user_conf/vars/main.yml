@@ -1,0 +1,6 @@
+---
+sys_locales:
+  - fr_FR.UTF-8
+  - en_US.UTF-8
+sys_timezone: Europe/Paris
+portainer_version: latest

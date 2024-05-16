@@ -16,3 +16,9 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ packages }}"
+
+- name: "Install Python packages"
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ pip_packages }}"

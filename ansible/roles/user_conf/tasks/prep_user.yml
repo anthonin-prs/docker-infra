@@ -5,7 +5,7 @@
     password: "{{ final_user_pass | password_hash('sha512') }}"
     shell: /bin/bash
 
-- name: Add postgres to sudoers
+- name: Add user to sudoers
   ansible.builtin.blockinfile:
     path: "/etc/sudoers.d/{{ final_user }}"
     block: |
@@ -63,6 +63,7 @@
       Host *
         IdentityFile ~/.ssh/Perso_SSH
         AddKeysToAgent yes
+        StrictHostKeyChecking no
     create: true
   become: true
   become_user: "{{ final_user }}"

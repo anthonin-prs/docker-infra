@@ -8,5 +8,5 @@
 - name: Set locale and timezone
   ansible.builtin.include_tasks: set_locales.yml
 
-- name: Configure user "{{ final_user }}"
-  ansible.builtin.include_tasks: prep_user.yml
+- name: System configuration
+  ansible.builtin.include_tasks: sys_config.yml

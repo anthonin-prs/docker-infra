@@ -1,3 +1,10 @@
+- name: Allow all from home
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    jump: ACCEPT
+    source: 82.65.131.158/32
+
 - name: Allow SSH
   ansible.builtin.iptables:
     chain: INPUT
@@ -10,7 +17,7 @@
   with_items:
     - 0.0.0.0/0
 
-- name: Allow Web
+- name: Allow public Web
   ansible.builtin.iptables:
     chain: INPUT
     protocol: TCP

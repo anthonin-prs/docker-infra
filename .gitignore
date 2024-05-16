@@ -6,3 +6,5 @@ web/.env
 ansible/roles/system-prep/files/SSH/Perso_SSH
 ansible/roles/system-prep/files/SSH/Perso_SSH.pub
 ansible/group_vars/VPS.yml
+ansible/roles/user_conf/files/GPG/GPG_Perso.asc
+ansible/roles/user_conf/files/SSH/Perso_SSH

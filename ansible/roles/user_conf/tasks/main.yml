@@ -1,0 +1,15 @@
+---
+- name: Configure user "{{ final_user }}"
+  ansible.builtin.include_tasks: prep_user.yml
+
+- name: Install portainer
+  ansible.builtin.include_tasks: install_portainer.yml
+
+- name: Configure S3
+  ansible.builtin.include_tasks: configure_s3.yml
+
+- name: Import GPG Key
+  ansible.builtin.include_tasks: configure_gpg.yml
+
+- name: Clone git repos
+  ansible.builtin.include_tasks: clone_git_repos.yml

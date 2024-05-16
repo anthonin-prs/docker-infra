@@ -4,7 +4,6 @@
     ctstate: ESTABLISHED,RELATED
     protocol: TCP
     jump: ACCEPT
-  become: yes
 
 - name: Allow Established OUT
   ansible.builtin.iptables:
@@ -12,18 +11,15 @@
     ctstate: ESTABLISHED
     protocol: TCP
     jump: ACCEPT
-  become: yes
 
-- name: Allow Loopback IN
-  ansible.builtin.iptables:
-    chain: INPUT
-    in_interface: lo
-    jump: ACCEPT
-  become: yes
+# - name: Allow Loopback IN
+#   ansible.builtin.iptables:
+#     chain: INPUT
+#     in_interface: lo
+#     jump: ACCEPT
 
 - name: Allow Loopback OUT
   ansible.builtin.iptables:
     chain: OUTPUT
     out_interface: lo
     jump: ACCEPT
-  become: yes
