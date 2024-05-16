@@ -24,8 +24,8 @@
   with_items: "{{ git_repos }}"
 
 - name: Copy backup config file
-  copy:
-    src: "files/backup_conf.json"
+  template:
+    src: "templates/backup_conf.json.j2"
     dest: "~/git/s3-backuper/config.json"
     owner: "{{ final_user }}"
     group: "{{ final_user }}"

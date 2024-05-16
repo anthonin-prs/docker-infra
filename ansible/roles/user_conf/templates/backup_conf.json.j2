@@ -3,7 +3,7 @@
         {
             "name": "Portainer Volumes",
             "source_folder": "/var/lib/docker/volumes",
-            "dest_bucket": "vps-portainer-backups",
+            "dest_bucket": "{{ s3_bucket_name }}",
             "retention_days": "30"
         }
     ]
