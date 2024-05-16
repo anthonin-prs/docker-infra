@@ -1,9 +1,24 @@
 # Todo
 
 ## Ansible
-- Firewall
+- S3 backuper (copy + conf + cron)
 
-## Done
+## VPS
+- Backup / Restore Volumes
+- Restart Instances
+
+## Applications
+- Restore Prometheus
+- Restore Grafana
+- Restore Uptime kuma
+- Restore Mails
+
+## Other
+- DNS rebind
+- Whitelists mails IPs 
+
+### Done
+- Firewall
 - Configure S3
 - Install portainer
 - Disable SSH pass auth
