@@ -47,8 +47,6 @@
   copy:
     src: "files/download_last_portainer_backup.sh"
     dest: "~/download_last_portainer_backup.sh"
-    owner: "{{ final_user }}"
-    group: "{{ final_user }}"
+    owner: "root"
+    group: "root"
     mode: 0744
-  become: true
-  become_user: "{{ final_user }}"

@@ -1,16 +1,11 @@
 # Todo
 
 ## Ansible
-- S3 backuper (copy + conf + cron)
 
 ## VPS
-- Backup / Restore Volumes
 - Restart Instances
 
 ## Applications
-- Restore Prometheus
-- Restore Grafana
-- Restore Uptime kuma
 - Restore Mails
 
 ## Other
@@ -18,6 +13,11 @@
 - Whitelists mails IPs 
 
 ### Done
+- Restore Prometheus
+- Restore Grafana
+- Restore Uptime kuma
+- S3 backuper (copy + conf + cron)
+- Backup / Restore Volumes
 - Firewall
 - Configure S3
 - Install portainer
