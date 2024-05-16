@@ -1,24 +1,16 @@
 # Todo
 
-## Ansible
-
-## VPS
-
 ## Applications
 - Prometheus Federation
-- Migrate dev machine
 - Plex on NAS
 
 ## Other
-- Home VPN
-
-## Fix:
-- Build wol for ARM
-- Adguard
-
-
+- Migrate dev machine
+- Migrate VPN + Change port
 
 ### Done
+- Adguard
+- Build wol for ARM
 - Homebridge
 - Home Portainer
 - Grafana restore
