@@ -6,12 +6,21 @@
 
 ## Applications
 - Prometheus Federation
+- Migrate dev machine
+- Plex on NAS
 
 ## Other
 - Home VPN
-- Home Portainer
+
+## Fix:
+- Build wol for ARM
+- Adguard
+
+
 
 ### Done
+- Homebridge
+- Home Portainer
 - Grafana restore
 - Whitelists mails IPs 
 - Restart Instances

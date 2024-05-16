@@ -44,8 +44,8 @@
   become_user: "{{ final_user }}"
 
 - name: Copy restore script
-  copy:
-    src: "files/download_last_portainer_backup.sh"
+  template:
+    src: "templates/download_last_portainer_backup.sh.j2"
     dest: "~/download_last_portainer_backup.sh"
     owner: "root"
     group: "root"

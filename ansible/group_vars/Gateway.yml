@@ -1,0 +1,6 @@
+---
+##
+## S3 Config
+##
+
+s3_bucket_name: portainer-backups

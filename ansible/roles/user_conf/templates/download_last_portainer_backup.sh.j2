@@ -1,0 +1,5 @@
+#!/bin/bash
+
+last_backup=$(aws s3 ls {{ s3_bucket_name }} | sort --reverse | grep .tar | head -1 | awk '{ print $4 }')
+
+aws s3 cp s3://{{ s3_bucket_name }}/$last_backup .
