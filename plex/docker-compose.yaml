@@ -1,0 +1,20 @@
+version: '3.8'
+
+volumes:
+  plex-config:
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM= #To be filled with https://www.plex.tv/claim/
+    volumes:
+      - plex-config:/config
+      - /mnt/Multimedia:/movies
+    restart: always
