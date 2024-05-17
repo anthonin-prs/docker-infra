@@ -1,8 +1,9 @@
 # Todo
 
 ## Applications
-- Prometheus Federation
+- HB Fix
 - Plex on NAS
+
 
 ## Other
 - Migrate dev machine

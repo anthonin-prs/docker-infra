@@ -4,3 +4,8 @@
 ##
 
 s3_bucket_name: portainer-backups
+nfs_mount:
+  ip: 192.168.0.210
+  directory: /Media
+  mount_point: /mnt
+  mount_directory: Multimedia
