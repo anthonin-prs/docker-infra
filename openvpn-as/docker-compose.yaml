@@ -1,0 +1,19 @@
+version: '3.8'
+
+volumes:
+  openvpn-data:
+
+services:
+  openvpn-as:
+    image: openvpn/openvpn-as:latest
+    container_name: openvpn-as
+    network_mode: host
+    # ports:
+    #   - "943:943"
+    #   - "444:444"
+    #   - "1194:1194/udp"
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - openvpn-data:/openvpn 
+    restart: always
