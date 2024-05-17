@@ -1,8 +1,8 @@
 .gitsecret/keys/random_seed
 !*.secret
-supervision/.env
-adguard/AdGuardHome.yaml
-web/.env
+stacks/supervision/.env
+stacks/adguard/AdGuardHome.yaml
+stacks/web/.env
 ansible/roles/system-prep/files/SSH/Perso_SSH
 ansible/roles/system-prep/files/SSH/Perso_SSH.pub
 ansible/roles/user_conf/files/GPG/GPG_Perso.asc
