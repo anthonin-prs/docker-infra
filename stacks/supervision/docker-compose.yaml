@@ -26,6 +26,7 @@ services:
   grafana:
     image: grafana/grafana:9.1.6
     container_name: grafana
+    restart: always
     volumes:
       - grafana-data:/var/lib/grafana/
     env_file:
