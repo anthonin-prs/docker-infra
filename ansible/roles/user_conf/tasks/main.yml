@@ -1,18 +1,18 @@
 ---
-# - name: Configure user "{{ final_user }}"
-#   ansible.builtin.include_tasks: prep_user.yml
+ - name: Configure user "{{ final_user }}"
+   ansible.builtin.include_tasks: prep_user.yml
 
-# - name: Install portainer
-#   ansible.builtin.include_tasks: install_portainer.yml
+ - name: Install portainer
+   ansible.builtin.include_tasks: install_portainer.yml
 
-# - name: Configure S3
-#   ansible.builtin.include_tasks: configure_s3.yml
+ - name: Configure S3
+   ansible.builtin.include_tasks: configure_s3.yml
 
-# - name: Import GPG Key
-#   ansible.builtin.include_tasks: configure_gpg.yml
+ - name: Import GPG Key
+   ansible.builtin.include_tasks: configure_gpg.yml
 
-# - name: Get repos & conf backup
-#   ansible.builtin.include_tasks: repos_backup.yml
+ - name: Get repos & conf backup
+   ansible.builtin.include_tasks: repos_backup.yml
 
 - name: Mount NFS
   ansible.builtin.include_tasks: mount_nfs.yml
