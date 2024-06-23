@@ -4,6 +4,7 @@ volumes:
   prometheus-data:
   prometheus-config:
   grafana-data:
+  grafana-config:
   uptime_kuma-data:
 
 services:
@@ -11,7 +12,6 @@ services:
     image: grafana/loki:2.9.0
     container_name: loki
     restart: always
-    network_mode: host
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -30,6 +30,7 @@ services:
     restart: always
     volumes:
       - grafana-data:/var/lib/grafana/
+      - grafana-config:/etc/grafana/
     env_file:
       - stack.env
     environment:
