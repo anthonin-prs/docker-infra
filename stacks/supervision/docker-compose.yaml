@@ -170,10 +170,10 @@ services:
           cpus: '0.1'
           memory: 20M
 
-  legrand_exporter:
+  $legrand_exporter:
     image: apresse/legrand_exporter:0.6
     container_name: legrand_exporter
-    restart: always
+    restart: no
     env_file:
       - stack.env
     deploy:
