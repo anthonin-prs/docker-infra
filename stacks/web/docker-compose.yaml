@@ -16,6 +16,8 @@ volumes:
   wol-ebe-data:
   share-data:
   fileserver:
+  mail-data:
+  well_known:
 
 services:
   nginx:
@@ -29,6 +31,7 @@ services:
     volumes:
       - nginx-data:/data
       - nginx-certs:/etc/letsencrypt
+      - well_known:/poste_wk
     env_file:
       - stack.env
     deploy:
@@ -209,3 +212,29 @@ services:
     volumes:
       - fileserver:/app/data/state/
 
+  mailserver:
+    image: analogic/poste.io:2.4.6
+    container_name: mail_server
+    restart: always
+
+    ports:
+      - "25:25"
+      - "110:110"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+    volumes:
+      - mail-data:/data
+      - well_known:/opt/www/.well-known
+    environment:
+      - TZ=Europe/Paris
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+          memory: 5000M
+        reservations:
+          cpus: '1.5'
+          memory: 3500M
