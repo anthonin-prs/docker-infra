@@ -14,6 +14,6 @@
  - name: Get repos & conf backup
    ansible.builtin.include_tasks: repos_backup.yml
 
-- name: Mount NFS
-  ansible.builtin.include_tasks: mount_nfs.yml
-  when: inventory_hostname in groups["Gateway"]
+ - name: Mount NFS
+   ansible.builtin.include_tasks: mount_nfs.yml
+   when: inventory_hostname in groups["Gateway"]

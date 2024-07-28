@@ -4,12 +4,12 @@
     force_apt_get: yes
     upgrade: dist
 
-- name: Preconf iptables
-  ansible.builtin.debconf:
-    name: iptables-persistent
-    question: iptables-persistent/autosave_v4
-    vtype: boolean
-    value: true
+# - name: Preconf iptables
+#   ansible.builtin.debconf:
+#     name: iptables-persistent
+#     question: iptables-persistent/autosave_v4
+#     vtype: boolean
+#     value: true
 
 - name: Install packages
   apt:
