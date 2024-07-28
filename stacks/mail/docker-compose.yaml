@@ -9,11 +9,13 @@ services:
     image: analogic/poste.io:2.4.6
     container_name: mail_server
     restart: always
-
+    network_mode: host
     ports:
       - "25:25"
+      - "80:80"
       - "110:110"
       - "143:143"
+      - "443:443"
       - "465:465"
       - "587:587"
       - "993:993"
