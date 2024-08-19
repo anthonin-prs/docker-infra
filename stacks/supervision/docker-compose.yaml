@@ -170,7 +170,7 @@ services:
   legrand_exporter:
     image: apresse/legrand_exporter:0.8
     container_name: legrand_exporter
-    restart: no
+    restart: always
     env_file:
       - stack.env
     deploy:
