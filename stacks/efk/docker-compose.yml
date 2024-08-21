@@ -27,7 +27,7 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.http.ssl.enabled=false
+      # - xpack.security.http.ssl.enabled=false
     expose:
       - "9200"
     ports:
