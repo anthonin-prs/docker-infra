@@ -183,7 +183,7 @@ services:
           memory: 20M
 
   meross_exporter:
-    image: apresse/meross_exporter:0.1
+    image: apresse/meross_exporter:0.2
     container_name: meross_exporter
     restart: no
     env_file:
@@ -196,7 +196,6 @@ services:
         reservations:
           cpus: '0.1'
           memory: 20M
-
 
   meteo_exporter:
     image: apresse/meteofrance_exporter:0.1
