@@ -205,7 +205,7 @@ services:
 
   umami:
     container_name: unami
-    image: ghcr.io/umami-software/umami:mysql-latest
+    image: ghcr.io/umami-software/umami:postgresql-latest
     ports:
       - "3443:3000"
     environment:
