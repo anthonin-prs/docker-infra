@@ -10,7 +10,7 @@ volumes:
 
 services:
   loki:
-    image: grafana/loki:2.9.0
+    image: grafana/loki:3.0.0
     container_name: loki
     restart: always
     ports:
@@ -26,7 +26,7 @@ services:
           memory: 20M
 
   grafana:
-    image: grafana/grafana:11.1.4
+    image: grafana/grafana:11.2.0
     container_name: grafana
     restart: always
     volumes:
