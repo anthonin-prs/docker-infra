@@ -4,3 +4,5 @@
 ##
 
 s3_bucket_name: mail-backups
+
+loki_url: 185.216.27.61:3100

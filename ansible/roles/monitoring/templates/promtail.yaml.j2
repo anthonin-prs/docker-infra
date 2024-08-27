@@ -6,10 +6,10 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: {{ loki_url }}
-    basic_auth:
-      username: {{ promtail_basic_username }}
-      password: {{ promtail_basic_pasword }}
+  - url: http://{{ loki_url }}/loki/api/v1/push
+#    basic_auth:
+#      username: \{\{ promtail_basic_username \}\}
+#      password: \{\{ promtail_basic_pasword \}\}
 
 scrape_configs:
   - job_name: system
