@@ -208,3 +208,22 @@ services:
       - "8334:8334"
     volumes:
       - fileserver:/app/data/state/
+
+
+  umami:
+    image: ghcr.io/umami-software/umami:mysql-latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_TYPE: mysql
+    env_file:
+      - stack.env
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
