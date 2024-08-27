@@ -204,7 +204,7 @@ services:
       - fileserver:/app/data/state/
 
   umami:
-    container_name: unami
+    container_name: umami
     image: ghcr.io/umami-software/umami:postgresql-latest
     ports:
       - "3443:3000"
@@ -213,7 +213,7 @@ services:
     env_file:
       - stack.env
     depends_on:
-      db:
+      umami-db:
         condition: service_healthy
     restart: always
     healthcheck:
@@ -222,8 +222,8 @@ services:
       timeout: 5s
       retries: 5
 
-  db:
-    container_name: unami-db
+  umami-db:
+    container_name: umami-db
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: umami
@@ -237,6 +237,4 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-
 
