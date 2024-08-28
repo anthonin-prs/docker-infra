@@ -1,0 +1,11 @@
+Which file ? : /app/templates/proxy_host.conf
+Where ? : Under /location
+
+        if ($add_header ~ "^$") {
+          set $add_header '';
+        }
+
+        proxy_set_header Accept-Encoding "";
+        sub_filter_types text/html;
+        sub_filter '</head>' "${add_header}\n</head>";
+        sub_filter_once off;
