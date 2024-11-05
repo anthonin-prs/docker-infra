@@ -211,3 +211,14 @@ services:
         reservations:
           cpus: '0.1'
           memory: 20M
+  pal_exporter:
+    image: docker.io/bostrt/palworld-exporter:latest
+    restart: always
+    container_name: palworld_exporter
+    ports:
+      - 9877:9877/tcp
+    env_file:
+      - stack.env
+    environment:
+      - RCON_HOST=185.216.27.61
+      - RCON_PORT=25575
