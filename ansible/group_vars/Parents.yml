@@ -1,0 +1,8 @@
+---
+##
+## S3 Config
+##
+
+s3_bucket_name: parents-backups
+
+loki_url: 185.216.27.61:3100
