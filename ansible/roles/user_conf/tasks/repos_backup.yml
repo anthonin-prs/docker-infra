@@ -23,6 +23,15 @@
   become_user: "{{ final_user }}"
   with_items: "{{ git_repos }}"
 
+- name: Backing up config file
+  copy:
+    src: "~/git/s3-backuper/config.json"
+    dest: "~/git/s3-backuper/config.json.bak"
+    remote_src: yes
+  when: config_file.stat.exists
+  become: true
+  become_user: "{{ final_user }}"
+
 - name: Copy backup config file
   template:
     src: "templates/backup_conf.json.j2"
@@ -39,7 +48,7 @@
     name: "Backup docker volumes"
     minute: "0"
     hour: "3"
-    job: "bash -c \"cd /home/{{ final_user }}/git/s3-backuper && ./backup.sh config.json\""
+    job: 'bash -c "cd /home/{{ final_user }}/git/s3-backuper && ./backup.sh config.json && curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_success.ntfy_content}}" -H "Tags: {{backup_success.ntfy_icon}}" || curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_error.ntfy_content}}" -H "Tags: {{backup_error.ntfy_icon}}" "'
   become: true
   become_user: "{{ final_user }}"
 
