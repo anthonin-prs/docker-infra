@@ -24,14 +24,6 @@
     state: directory
     mode: "0755"
 
-- name: Copy promtail config
-  template:
-    src: templates/promtail.yaml.j2
-    dest: /etc/promtail/promtail.yaml
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Install unit file to systemd
   template:
     src: files/promtail.service
@@ -46,6 +38,14 @@
     enabled: yes
     state: started
     name: promtail.service
+
+- name: Copy promtail config
+  template:
+    src: templates/promtail.yaml.j2
+    dest: /etc/promtail/promtail.yaml
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Enable & restart Promtail service
   service:
