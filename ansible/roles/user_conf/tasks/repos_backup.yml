@@ -48,7 +48,7 @@
     name: "Backup docker volumes"
     minute: "0"
     hour: "3"
-    job: 'bash -c "cd /home/{{ final_user }}/git/s3-backuper && ./backup.sh config.json && curl {{ntfy_url}} -u {{ntfy_auth}} -H "Title: {{ntfy_title}}" -d "{{backup_success.ntfy_content}}" -H "Tags: {{backup_success.ntfy_icon}}" || curl {{ntfy_url}} -u {{ntfy_auth}} -H "Title: {{ntfy_title}}" -d "{{backup_error.ntfy_content}}" -H "Tags: {{backup_error.ntfy_icon}}" "'
+    job: 'cd /home/{{ final_user }}/git/s3-backuper && ./backup.sh config.json && curl {{ntfy_url}} -u {{ntfy_auth}} -H "Title: {{ntfy_title}}" -d "{{backup_success.ntfy_content}}" -H "Tags: {{backup_success.ntfy_icon}}" || curl {{ntfy_url}} -u {{ntfy_auth}} -H "Title: {{ntfy_title}}" -d "{{backup_error.ntfy_content}}" -H "Tags: {{backup_error.ntfy_icon}}"'
   become: true
   become_user: "{{ final_user }}"
 
