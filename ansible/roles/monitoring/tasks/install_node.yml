@@ -32,3 +32,10 @@
     enabled: yes
     state: started
     name: node_exporter.service
+
+- name: Enable & restart Node service
+  service:
+    name: node_exporter
+    state: restarted
+    daemon_reload: true
+    enabled: yes

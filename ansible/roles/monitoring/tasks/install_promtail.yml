@@ -24,7 +24,7 @@
     state: directory
     mode: "0755"
 
-- name: Copy promtail settings
+- name: Copy promtail config
   template:
     src: templates/promtail.yaml.j2
     dest: /etc/promtail/promtail.yaml
@@ -46,3 +46,10 @@
     enabled: yes
     state: started
     name: promtail.service
+
+- name: Enable & restart Promtail service
+  service:
+    name: promtail
+    state: restarted
+    daemon_reload: true
+    enabled: yes
