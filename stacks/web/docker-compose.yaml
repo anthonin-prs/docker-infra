@@ -20,11 +20,18 @@ volumes:
   ntfy-config:
   ntfy-cache:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 
 services:
   nginx:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx
+    logging: *default-logging
     restart: always
     ports:
       - "80:80"
@@ -47,6 +54,7 @@ services:
   database:
     image: mariadb:latest
     container_name: database
+    logging: *default-logging
     restart: always
     ports:
       - "3306:3306"
@@ -66,6 +74,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin
+    logging: *default-logging
     restart: always
     depends_on:
       - database
@@ -89,6 +98,7 @@ services:
   access-pc: &service_default
     image: apresse/php_fpm_pdo_nginx:0.7
     container_name: access-pc
+    logging: *default-logging
     restart: always
     # ports:
     #   - "8080:8080"
@@ -109,6 +119,7 @@ services:
   access-pc-gestion:
     <<: *service_default
     container_name: access-pc-gestion
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -119,6 +130,7 @@ services:
   access-pc-clients:
     <<: *service_default
     container_name: access-pc-clients
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -129,6 +141,7 @@ services:
   signature-generator:
     <<: *service_default
     container_name: signature-generator
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -137,6 +150,7 @@ services:
   anthonin-fr:
     <<: *service_default
     container_name: anthonin-fr
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -145,6 +159,7 @@ services:
   ebenolt-com:
     <<: *service_default
     container_name: ebenolt-com
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -153,6 +168,7 @@ services:
   ip-ebe:
     <<: *service_default
     container_name: ip-ebe
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -161,6 +177,7 @@ services:
   sutom:
     <<: *service_default
     container_name: sutom
+    logging: *default-logging
     # ports:
     #   - "8091:8080"
     volumes:
@@ -171,6 +188,7 @@ services:
   share-ssh-server:
     image: linuxserver/openssh-server
     container_name: ssh-server
+    logging: *default-logging
     restart: always
     ports:
       - "222:2222"
@@ -190,6 +208,7 @@ services:
   share-web:
     <<: *service_default
     container_name: share-web
+    logging: *default-logging
     ports:
       - "8082:8080"
     volumes:
@@ -197,6 +216,7 @@ services:
 
   fileserver:
     container_name: fileserver
+    logging: *default-logging
     image: machines/filestash
     restart: always
     environment:
@@ -208,6 +228,7 @@ services:
 
   umami:
     container_name: umami
+    logging: *default-logging
     image: ghcr.io/umami-software/umami:postgresql-latest
     ports:
       - "3443:3000"
@@ -227,6 +248,7 @@ services:
 
   umami-db:
     container_name: umami-db
+    logging: *default-logging
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: umami
@@ -243,6 +265,7 @@ services:
 
   homepage:
     container_name: homepage
+    logging: *default-logging
     image: ghcr.io/gethomepage/homepage:latest
     # ports:
     #   - 3000:3000
@@ -254,6 +277,7 @@ services:
     <<: *service_default
     image: binwiederhier/ntfy
     container_name: ntfy
+    logging: *default-logging
     command:
       - serve
     environment:

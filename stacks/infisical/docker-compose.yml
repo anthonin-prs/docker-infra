@@ -6,10 +6,16 @@ volumes:
   redis_data:
     driver: local
 
-
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    
 services:
   db-migration:
     container_name: infisical-db-migration
+    logging: *default-logging
     depends_on:
       db:
         condition: service_healthy
@@ -21,6 +27,7 @@ services:
 
   backend:
     container_name: infisical-backend
+    logging: *default-logging
     restart: unless-stopped
     depends_on:
       db:

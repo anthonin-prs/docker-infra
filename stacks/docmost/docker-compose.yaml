@@ -5,10 +5,17 @@ volumes:
   db_data:
   redis_data:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    
 services:
   docmost:
     image: docmost/docmost:latest
     container_name: docmost
+    logging: *default-logging
     env_file:
       - stack.env
     depends_on:
@@ -26,6 +33,7 @@ services:
   docdb:
     image: postgres:16-alpine
     container_name: docdb
+    logging: *default-logging
     env_file:
       - stack.env
     environment:
@@ -38,6 +46,7 @@ services:
   docredis:
     image: redis:7.2-alpine
     container_name: docredis
+    logging: *default-logging
     restart: unless-stopped
     volumes:
       - redis_data:/data

@@ -3,10 +3,18 @@ version: '3.8'
 volumes:
   plex-config:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
+    logging: *default-logging
     network_mode: host
     environment:
       - PUID=1000

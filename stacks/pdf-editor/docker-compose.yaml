@@ -1,4 +1,12 @@
 version: '3.8'
+
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    
+
 services:
   stirling-pdf:
     image: frooodle/s-pdf:latest
@@ -13,6 +21,7 @@ services:
       - DOCKER_ENABLE_SECURITY=false
       - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
     container_name: pdf-editor
+    logging: *default-logging
     restart: always
 volumes:
   trainingData:

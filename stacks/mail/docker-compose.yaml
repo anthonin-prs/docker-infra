@@ -4,10 +4,17 @@ volumes:
   mail-data:
   well_known:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    
 services:
   mailserver:
     image: analogic/poste.io:2.4.7
     container_name: mail_server
+    logging: *default-logging
     restart: always
     network_mode: host
     ports:

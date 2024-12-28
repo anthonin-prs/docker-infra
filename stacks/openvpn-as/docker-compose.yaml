@@ -3,10 +3,17 @@ version: '3.8'
 volumes:
   openvpn-data:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 services:
   openvpn-as:
     image: openvpn/openvpn-as:latest
     container_name: openvpn-as
+    logging: *default-logging
     network_mode: host
     # ports:
     #   - "943:943"

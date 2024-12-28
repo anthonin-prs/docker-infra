@@ -3,21 +3,24 @@ version: "3.8"
 volumes:
   homebridge-data:
 
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options: 
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+
 services:
   homebridge:
     image: homebridge/homebridge:no-avahi
     container_name: homebridge
+    logging: *default-logging
     restart: always
     network_mode: host
     ports:
       - "8581:8581"
     volumes:
       - homebridge-data:/homebridge
-    logging:
-      driver: json-file
-      options:
-        max-size: "10mb"
-        max-file: "1"
     deploy:
       resources:
         limits:
