@@ -84,11 +84,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 150M
+          cpus: '1'
+          memory: 800M
         reservations:
-          cpus: '0.1'
-          memory: 20M
+          cpus: '0.2'
+          memory: 150M
 
   prometheus:
     image: prom/prometheus:v2.27.0
@@ -104,11 +104,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 500M
+          cpus: '1'
+          memory: 800M
         reservations:
-          cpus: '0.1'
-          memory: 50M
+          cpus: '0.2'
+          memory: 150M
 
   blackbox_exporter:
     image: quay.io/prometheus/blackbox-exporter:latest
