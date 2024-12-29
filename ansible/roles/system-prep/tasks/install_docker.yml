@@ -22,6 +22,19 @@
     name: "{{ final_user }}"
     groups: docker
 
+- name: Copy docker daemon settings
+  copy:
+    src: docker-daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload Docker service
+  service:
+    name: docker
+    state: reloaded
+    
 - name: Start Docker service
   service:
     name: docker
