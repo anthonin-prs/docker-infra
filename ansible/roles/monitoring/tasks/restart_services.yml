@@ -1,7 +1,0 @@
-- name: Restart node_exporter and promtail
-  service:
-    name: "{{ item }}"
-    state: restarted
-  with_items:
-    - node_exporter
-    # - promtail

@@ -1,11 +1,8 @@
 ---
 # tasks file for monitoring
 
-# - name: Install Node Exporter
-#   ansible.builtin.include_tasks: install_node.yml
+- name: Install Node Exporter
+  ansible.builtin.include_tasks: install_node.yml
 
 - name: Install Promtail
   ansible.builtin.include_tasks: install_promtail.yml
-
-# - name: Restart services
-#   ansible.builtin.include_tasks: restart_services.yml
