@@ -9,10 +9,10 @@ volumes:
   loki-config:
   loki-data:
 
-x-logging:
-  &default-logging
+
+x-logging: &default-logging
   driver: "json-file"
-  options: 
+  options:
     tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 services:
@@ -69,7 +69,7 @@ services:
         reservations:
           cpus: '0.1'
           memory: 100M
-          
+
   loki:
     image: grafana/loki:3.0.0
     container_name: loki
@@ -225,3 +225,10 @@ services:
     environment:
       - RCON_HOST=185.216.27.61
       - RCON_PORT=25575
+
+  grafana-to-ntfy:
+    container_name: grafana-to-ntfy
+    image: saibe1111/grafana-to-ntfy
+    restart: always
+    env_file:
+      - stack.env
