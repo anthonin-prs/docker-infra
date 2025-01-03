@@ -2,13 +2,16 @@ version: '3.8'
 
 volumes:
   plex-config:
-
+  qbittorrent-config:
+  radarr-config:
+  sonarr-config:
+  prowlarr-config:
+  
 x-logging:
   &default-logging
   driver: "json-file"
   options: 
     tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
 
 services:
   plex:
@@ -21,8 +24,98 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - VERSION=docker
-      - PLEX_CLAIM= #To be filled with https://www.plex.tv/claim/
+      - PLEX_CLAIM=claim-qsQM_o3uLKeNDsWXpUSx
     volumes:
       - plex-config:/config
       - /mnt/Multimedia:/movies
-    restart: always
+    restart: unless-stopped
+
+  # qBitorrent is used to download torrents
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - WEBUI_PORT=8081
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${MEDIA_DIRECTORY}:/data
+      - qbittorrent-config:/config
+    restart: unless-stopped
+    #ports: # qbittorrent
+      #- 8081:8081 # qbittorrent
+    network_mode: "service:gluetun"
+
+  # Sonarr is used to query, add downloads to the download queue and index TV shows
+  # https://sonarr.tv/
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${MEDIA_DIRECTORY}:/data
+      - sonarr-config:/config
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  # Radarr is used to query, add downloads to the download queue and index Movies
+  # https://radarr.video/
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${MEDIA_DIRECTORY}:/data
+      - radarr-config:/config
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  
+  # Prowlarr is our torrent indexer/searcher. Sonarr/Radarr use Prowlarr as a source
+  # https://prowlarr.com/
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - prowlarr-config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  # Gluetun is our VPN, so you can download torrents safely
+  gluetun:
+    image: qmcgaw/gluetun:v3
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8003:8000/tcp # Admin
+      - 8080:8080/tcp # gluetun
+      - 8081:8081/tcp # gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE}
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${VPN_USER}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - OPENVPN_CIPHERS=AES-256-GCM
+      - PORT_FORWARD_ONLY=on
+      - VPN_PORT_FORWARDING=on
+    restart: unless-stopped
