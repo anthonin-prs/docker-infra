@@ -290,7 +290,7 @@ services:
     #   - 80:80
 
   wol-ebe: &service_default
-    image: apresse/php_fpm_pdo_nginx:0.7
+    image: apresse/php_fpm_pdo_nginx:8085
     container_name: wol-ebe
     logging: *default-logging
     network_mode: host
