@@ -6,6 +6,7 @@ volumes:
   radarr-config:
   sonarr-config:
   prowlarr-config:
+  tautulli-config:
   
 x-logging:
   &default-logging
@@ -118,4 +119,17 @@ services:
       - OPENVPN_CIPHERS=AES-256-GCM
       - PORT_FORWARD_ONLY=on
       - VPN_PORT_FORWARDING=on
+    restart: unless-stopped
+
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    container_name: tautulli
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - tautulli-config:/config
+    ports:
+      - 8181:8181
     restart: unless-stopped
