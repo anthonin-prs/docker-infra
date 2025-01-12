@@ -232,3 +232,10 @@ services:
     restart: always
     env_file:
       - stack.env
+
+  qbittorrent_exporter:
+    container_name: qbittorrent_exporter
+    image: ghcr.io/esanchezm/prometheus-qbittorrent-exporter
+    restart: always
+    env_file:
+      - stack.env
