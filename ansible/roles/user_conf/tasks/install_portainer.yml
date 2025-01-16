@@ -1,4 +1,8 @@
 ---
+- name: Create portainer volume
+  docker_volume:
+    name: portainer_data
+
 - name: Run portainer
   docker_container:
     name: portainer

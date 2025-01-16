@@ -16,4 +16,4 @@
 
  - name: Mount NFS
    ansible.builtin.include_tasks: mount_nfs.yml
-   when: inventory_hostname in groups["Gateway"]
+   when: inventory_hostname in groups["Homeserver"]
