@@ -8,6 +8,7 @@ volumes:
   uptime_kuma-data:
   loki-config:
   loki-data:
+  meross_exporter-config:
 
 
 x-logging: &default-logging
@@ -189,6 +190,8 @@ services:
     restart: no
     env_file:
       - stack.env
+    volumes:
+    - meross_exporter-config:/app/src
     deploy:
       resources:
         limits:
