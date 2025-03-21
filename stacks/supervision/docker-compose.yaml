@@ -168,7 +168,7 @@ services:
           memory: 20M
 
   legrand_exporter:
-    image: apresse/legrand_exporter:0.9
+    image: apresse/legrand_exporter:1.0
     container_name: legrand_exporter
     logging: *default-logging
     restart: always
