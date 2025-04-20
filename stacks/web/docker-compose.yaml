@@ -270,6 +270,8 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     # ports:
     #   - 3000:3000
+    env_file:
+      - stack.env
     volumes:
       - homepage-config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
