@@ -30,6 +30,7 @@ services:
     volumes:
       - plex-config:/config
       - /mnt/Multimedia:/movies
+      - /dev/dri:/dev/dri
     restart: unless-stopped
 
   # qBitorrent is used to download torrents
