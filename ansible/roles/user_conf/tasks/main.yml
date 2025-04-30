@@ -4,16 +4,33 @@
 
  - name: Install portainer
    ansible.builtin.include_tasks: install_portainer.yml
+   when: inventory_hostname not in groups["VMs"]
 
  - name: Configure S3
    ansible.builtin.include_tasks: configure_s3.yml
+   when: inventory_hostname not in groups["VMs"]
 
  - name: Import GPG Key
    ansible.builtin.include_tasks: configure_gpg.yml
+   when: inventory_hostname not in groups["VMs"]
 
  - name: Get repos & conf backup
    ansible.builtin.include_tasks: repos_backup.yml
+   when: inventory_hostname not in groups["VMs"]
 
  - name: Mount NFS
    ansible.builtin.include_tasks: mount_nfs.yml
    when: inventory_hostname in groups["Homeserver"]
+
+ - name: Seed script
+   copy:
+    src: "files/seed_script.sh"
+    dest: "~/seed.sh"
+    owner: "{{ final_user }}"
+    group: "{{ final_user }}"
+    mode: 0750
+   become: true
+   become_user: "{{ final_user }}"
+   when: inventory_hostname in groups["VMs"] 
+
+
