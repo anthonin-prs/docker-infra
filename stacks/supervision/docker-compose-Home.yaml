@@ -5,7 +5,6 @@ volumes:
   prometheus-config:
   grafana-data:
   grafana-config:
-  uptime_kuma-data:
   loki-config:
   loki-data:
   meross_exporter-config:
@@ -127,25 +126,6 @@ services:
           cpus: '0.1'
           memory: 20M
 
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    logging: *default-logging
-    restart: always
-    ports:
-      - 3001:3001
-    volumes:
-      - uptime_kuma-data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    deploy:
-      resources:
-        limits:
-          cpus: '0.8'
-          memory: 900M
-        reservations:
-          cpus: '0.5'
-          memory: 500M
-
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -216,18 +196,6 @@ services:
         reservations:
           cpus: '0.1'
           memory: 20M
-  pal_exporter:
-    image: docker.io/bostrt/palworld-exporter:latest
-    restart: always
-    container_name: palworld_exporter
-    logging: *default-logging
-    ports:
-      - 9877:9877/tcp
-    env_file:
-      - stack.env
-    environment:
-      - RCON_HOST=185.216.27.61
-      - RCON_PORT=25575
 
   grafana-to-ntfy:
     container_name: grafana-to-ntfy
