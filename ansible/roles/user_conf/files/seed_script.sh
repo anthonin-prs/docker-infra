@@ -17,6 +17,8 @@ host_ip=$2
 sudo apt update > /dev/null 2>&1
 sed -i "s/Ebenolt-Template/$hostname/g" /etc/hosts
 sed -i "s/Ebenolt-Template/$hostname/g" /etc/hostname
+sed -i "s/Ebenolt-Template/$hostname/g" /etc/promtail/promtail.yaml
+
 ip_block_1=$(echo $host_ip | awk -F. '{print $1}')
 ip_block_2=$(echo $host_ip | awk -F. '{print $2}')
 ip_block_3=$(echo $host_ip | awk -F. '{print $3}')
