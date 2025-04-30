@@ -291,21 +291,21 @@ services:
     # ports:
     #   - 80:80
 
-  wol-ebe: &service_default
-    image: apresse/php_fpm_pdo_nginx:8085
-    container_name: wol-ebe
-    logging: *default-logging
-    network_mode: host
-    restart: always
-    # ports:
-    #  - "8080:8080"
-    volumes:
-      - wol-ebe-data:/var/www/html
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 500M
-        reservations:
-          cpus: '0.1'
-          memory: 100M
+  # wol-ebe: &service_default
+  #   image: apresse/php_fpm_pdo_nginx:8085
+  #   container_name: wol-ebe
+  #   logging: *default-logging
+  #   network_mode: host
+  #   restart: always
+  #   # ports:
+  #   #  - "8080:8080"
+  #   volumes:
+  #     - wol-ebe-data:/var/www/html
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 500M
+  #       reservations:
+  #         cpus: '0.1'
+  #         memory: 100M
