@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/local/bin/promtail --config.file /etc/promtail/promtail.yaml
+ExecStart=/usr/local/bin/promtail --config.file /etc/promtail/promtail.yaml -client.external-labels=hostname=%H
 
 [Install]
 WantedBy=multi-user.target

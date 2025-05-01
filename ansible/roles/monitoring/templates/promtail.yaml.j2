@@ -16,7 +16,6 @@ scrape_configs:
           - localhost
         labels:
           job: sys_syslog
-          host: {{ ansible_hostname }}
           __path__: /var/log/syslog
 
   - job_name: sys_messages
@@ -25,7 +24,6 @@ scrape_configs:
           - localhost
         labels:
           job: sys_messages
-          host: {{ ansible_hostname }}
           __path__: /var/log/messages
 
   - job_name: sys_auth
@@ -34,7 +32,6 @@ scrape_configs:
           - localhost
         labels:
           job: sys_auth
-          host: {{ ansible_hostname }}
           __path__: /var/log/auth.log
 
   - job_name: sys_user
@@ -43,7 +40,6 @@ scrape_configs:
           - localhost
         labels:
           job: sys_user
-          host: {{ ansible_hostname }}
           __path__: /var/log/user.log
 
   - job_name: containers
@@ -52,7 +48,6 @@ scrape_configs:
         - localhost
       labels:
         job: containers
-        host: {{ ansible_hostname }}
         __path__: /var/lib/docker/containers/*/*log
 
     pipeline_stages:
