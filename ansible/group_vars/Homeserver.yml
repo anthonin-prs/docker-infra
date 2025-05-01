@@ -3,7 +3,6 @@
 ## S3 Config
 ##
 
-s3_bucket_name: portainer-backups
 nfs_mount:
   ip: 192.168.10.210
   directory: /Media

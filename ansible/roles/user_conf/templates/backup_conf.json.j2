@@ -1,11 +1,16 @@
 {
     "backups": [
+        {% for key,back_conf in backups.items() -%}
         {
-            "name": "Portainer Volumes",
-            "source_folder": "/var/lib/docker/volumes",
+            "name": "{{ back_conf.name }}",
+            "source_folder": "{{ back_conf.source_folder }}",
             "dest_bucket": "{{ s3_bucket_name }}",
-            "excluded": [],
-            "retention_days": "30"
-        }
+            "excluded": [
+                {% for exclusion in back_conf.excluded -%}
+                "{{ exclusion }}"{% if not loop.last %},{% endif %}
+                {% endfor %}],
+            "retention_days": "{{ back_conf.retention_days }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
     ]
 }

@@ -8,15 +8,13 @@
 
  - name: Configure S3
    ansible.builtin.include_tasks: configure_s3.yml
-   when: inventory_hostname not in groups["VMs"]
 
  - name: Import GPG Key
    ansible.builtin.include_tasks: configure_gpg.yml
    when: inventory_hostname not in groups["VMs"]
 
- - name: Get repos & conf backup
-   ansible.builtin.include_tasks: repos_backup.yml
-   when: inventory_hostname not in groups["VMs"]
+ - name: Config backup
+   ansible.builtin.include_tasks: config_backups.yml
 
  - name: Mount NFS
    ansible.builtin.include_tasks: mount_nfs.yml

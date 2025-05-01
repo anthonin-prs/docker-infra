@@ -1,0 +1,15 @@
+backups:
+  docker_volumes:
+    name: "docker_volumes"
+    source_folder: "/var/lib/docker/volumes"
+    excluded:
+      - "/var/lib/docker/volumes/metadata.db"
+      - "/var/lib/docker/volumes/backingFsBlockDev"
+    retention_days: "7"
+  docker_volumes2:
+    name: "docker_2"
+    source_folder: "/var/lib/docker/volumes"
+    excluded:
+      - "/var/lib/docker/volumes/metadata.db"
+      - "/var/lib/docker/volumes/backingFsBlockDev"
+    retention_days: "30"
