@@ -5,4 +5,11 @@ backups:
     excluded:
       - "/var/lib/docker/volumes/metadata.db"
       - "/var/lib/docker/volumes/backingFsBlockDev"
+      - "/var/lib/docker/volumes/stack_plex"
     retention_days: "15"
+
+nfs_mount:
+  ip: 192.168.10.210
+  directory: /Media
+  mount_point: /mnt
+  mount_directory: Multimedia

@@ -16,7 +16,7 @@
 
  - name: Mount NFS
    ansible.builtin.include_tasks: mount_nfs.yml
-   when: inventory_hostname in groups["Homeserver"]
+   when: nfs_mount is defined
 
  - name: Seed script
    copy:
