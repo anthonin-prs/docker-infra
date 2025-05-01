@@ -4,17 +4,15 @@
 
  - name: Install portainer
    ansible.builtin.include_tasks: install_portainer.yml
-   when: inventory_hostname not in groups["VMs"]
+   when: inventory_hostname in groups["portainers"]
 
  - name: Configure S3
    ansible.builtin.include_tasks: configure_s3.yml
-
- - name: Import GPG Key
-   ansible.builtin.include_tasks: configure_gpg.yml
-   when: inventory_hostname not in groups["VMs"]
+   when : backups is defined
 
  - name: Config backup
    ansible.builtin.include_tasks: config_backups.yml
+   when : backups is defined
 
  - name: Mount NFS
    ansible.builtin.include_tasks: mount_nfs.yml

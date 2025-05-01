@@ -1,0 +1,21 @@
+backups:
+  docker_volumes:
+    name: "docker_volumes"
+    source_folder: "/var/lib/docker/volumes"
+    excluded:
+      - "/var/lib/docker/volumes/metadata.db"
+      - "/var/lib/docker/volumes/backingFsBlockDev"
+      - "/var/lib/docker/volumes/supervision_prometheus-data/*"
+      - "/var/lib/docker/volumes/plex_plex-config/*"
+      - "/var/lib/docker/volumes/plex_radarr-config/*"
+    retention_days: "15"
+  bots:
+    name: "bots"
+    source_folder: "/home/ebenolt/bots"
+    excluded: ""
+    retention_days: "7"
+  old:
+    name: "old"
+    source_folder: "/home/ebenolt/old"
+    excluded: ""
+    retention_days: "7"

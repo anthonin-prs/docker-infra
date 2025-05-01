@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+lasts=$(aws s3 ls {{ s3_bucket_name }} | sort --reverse | grep .tar | grep $(hostname) | awk '{ print $4 }')
+
+for backup in $lasts;
+do
+    aws s3 cp s3://{{ s3_bucket_name }}/$backup .
+done

@@ -1,5 +1,5 @@
 ---
-- name: Create git directory
+- name: Create backup directory
   ansible.builtin.file:
     path: ~/backup
     state: directory
@@ -40,8 +40,8 @@
 
 - name: Copy restore script
   template:
-    src: "templates/download_last_portainer_backup.sh.j2"
-    dest: "~/backup/download_last_portainer_backup.sh"
+    src: "templates/download_last_backup.sh.j2"
+    dest: "~/backup/download_last_backup.sh"
     owner: "{{ final_user }}"
     group: "{{ final_user }}"
     mode: 0744
