@@ -8,6 +8,7 @@ volumes:
   loki-config:
   loki-data:
   meross_exporter-config:
+  pve_exporter-config:
 
 
 x-logging: &default-logging
@@ -210,3 +211,10 @@ services:
     restart: always
     env_file:
       - stack.env
+
+  pve_exporter:
+    container_name: pve_exporter
+    image: prompve/prometheus-pve-exporter
+    restart: always
+    volumes:
+      - pve_exporter-config:/etc/prometheus/
