@@ -9,11 +9,6 @@ backups:
       - "/var/lib/docker/volumes/plex_plex-config/*"
       - "/var/lib/docker/volumes/plex_radarr-config/*"
     retention_days: "15"
-  bots:
-    name: "bots"
-    source_folder: "/home/ebenolt/bots"
-    excluded: ""
-    retention_days: "7"
   old:
     name: "old"
     source_folder: "/home/ebenolt/old"
