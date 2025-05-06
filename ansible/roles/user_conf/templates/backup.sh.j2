@@ -2,6 +2,9 @@
 conf_file=$@
 
 PATH=$PATH:/usr/local/bin/
+AWS_ENDPOINT_URL={{s3_endpoint_url}}
+AWS_REQUEST_CHECKSUM_CALCULATION=when_required
+AWS_RESPONSE_CHECKSUM_VALIDATION=when_required
 
 jq -r -c .backups[] $conf_file | while read backup_task
 do

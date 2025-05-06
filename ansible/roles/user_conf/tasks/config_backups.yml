@@ -20,8 +20,8 @@
   become_user: "{{ final_user }}"
 
 - name: Copy backup script file
-  copy:
-    src: "files/backup.sh"
+  template:
+    src: "templates/backup.sh.j2"
     dest: "~/backup/backup.sh"
     owner: "{{ final_user }}"
     group: "{{ final_user }}"

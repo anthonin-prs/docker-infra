@@ -34,7 +34,7 @@
   service:
     name: docker
     state: reloaded
-    
+
 - name: Start Docker service
   service:
     name: docker
