@@ -1,4 +1,4 @@
-- name: Installation et configuration du VPS
+- name: Installation et configuration de l'infra
   hosts: infra
   tasks:
       - ansible.builtin.import_role:
