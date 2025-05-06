@@ -9,19 +9,21 @@ volumes:
 
 services:
   plex:
-    image: lscr.io/linuxserver/plex:latest
+    image: plexinc/pms-docker
     container_name: plex
     network_mode: host
+    privileged: true
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - VERSION=docker
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - TZ=Europe/Paris
+#      - VERSION=docker
       # - PLEX_CLAIM=claim-xxxxx
     volumes:
       - plex-config:/config
       - /mnt/Multimedia:/movies
       - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent
@@ -84,7 +86,7 @@ services:
       - 7878:7878
     restart: unless-stopped
 
-  
+
   # Prowlarr is our torrent indexer/searcher. Sonarr/Radarr use Prowlarr as a source
   # https://prowlarr.com/
   prowlarr:
