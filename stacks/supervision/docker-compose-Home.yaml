@@ -1,5 +1,3 @@
-version: "3.8"
-
 volumes:
   prometheus-data:
   prometheus-config:
@@ -7,6 +5,7 @@ volumes:
   grafana-config:
   loki-config:
   loki-data:
+  legrand_exporter-config:
   meross_exporter-config:
   pve_exporter-config:
 
@@ -155,6 +154,8 @@ services:
     restart: always
     env_file:
       - stack.env
+    volumes:
+    - legrand_exporter-config:/app/src
     deploy:
       resources:
         limits:
