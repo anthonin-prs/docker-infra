@@ -13,7 +13,7 @@ x-logging:
     
 services:
   docmost:
-    image: docmost/docmost:0.20.1
+    image: docmost/docmost:0.21.0
     container_name: docmost
     logging: *default-logging
     env_file:
