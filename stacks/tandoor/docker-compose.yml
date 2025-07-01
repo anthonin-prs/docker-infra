@@ -20,9 +20,9 @@ services:
     env_file:
       - stack.env
     volumes:
-      - staticfiles:/opt/recipes/staticfiles
-      - mediafiles:/opt/recipes/mediafiles
+      - static_files:/opt/recipes/staticfiles
+      - media_files:/opt/recipes/mediafiles
     depends_on:
-      - db_recipes
+      - database
     ports:
       - 8084:80
