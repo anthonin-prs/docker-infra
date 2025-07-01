@@ -25,4 +25,4 @@ services:
     depends_on:
       - database
     ports:
-      - 8084:80
+      - 8084:8080
