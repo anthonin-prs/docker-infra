@@ -24,4 +24,5 @@ services:
       - mediafiles:/opt/recipes/mediafiles
     depends_on:
       - db_recipes
-
+    ports:
+      - 8084:80
