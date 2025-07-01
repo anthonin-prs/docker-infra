@@ -1,0 +1,27 @@
+volumes:
+  psql_data:
+  static_files:
+  media_files:
+
+services:
+  database:
+    restart: always
+    image: postgres:16-alpine
+    container_name: tandoor_psql
+    volumes:
+      - psql_data:/var/lib/postgresql/data
+    env_file:
+      - stack.env
+
+  tandoor:
+    restart: always
+    image: vabene1111/recipes
+    container_name: tandoor
+    env_file:
+      - stack.env
+    volumes:
+      - staticfiles:/opt/recipes/staticfiles
+      - mediafiles:/opt/recipes/mediafiles
+    depends_on:
+      - db_recipes
+
