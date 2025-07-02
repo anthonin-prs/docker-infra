@@ -8,18 +8,14 @@ volumes:
   legrand_exporter-config:
   meross_exporter-config:
   pve_exporter-config:
-
-
-x-logging: &default-logging
-  driver: "json-file"
-  options:
-    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  vm_agentdata:
+  vm_config:
+  vm_data:
 
 services:
   grafana:
     image: grafana/grafana:12.0.2
     container_name: grafana
-    logging: *default-logging
     restart: always
     volumes:
       - grafana-data:/var/lib/grafana/
@@ -58,6 +54,7 @@ services:
             disableRecordingRules: false
             incrementalQueryOverlapWindow: 10m
         EOF
+
         /run.sh
     ports:
       - "3000:3000"
@@ -73,7 +70,6 @@ services:
   loki:
     image: grafana/loki:3.0.0
     container_name: loki
-    logging: *default-logging
     restart: always
     ports:
       - "3100:3100"
@@ -93,7 +89,6 @@ services:
   prometheus:
     image: prom/prometheus:v2.27.0
     container_name: prometheus
-    logging: *default-logging
     restart: always
     ports:
       - "9090:9090"
@@ -113,7 +108,6 @@ services:
   blackbox_exporter:
     image: quay.io/prometheus/blackbox-exporter:latest
     container_name: blackbox_exporter
-    logging: *default-logging
     restart: always
     #    ports:
     #      - "9115:9115"
@@ -129,7 +123,6 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
-    logging: *default-logging
     restart: always
     # ports:
     # - 8091:8080
@@ -150,7 +143,6 @@ services:
   legrand_exporter:
     image: apresse/legrand_exporter:1.0
     container_name: legrand_exporter
-    logging: *default-logging
     restart: always
     env_file:
       - stack.env
@@ -168,7 +160,6 @@ services:
   meross_exporter:
     image: apresse/meross_exporter:0.2
     container_name: meross_exporter
-    logging: *default-logging
     restart: no
     env_file:
       - stack.env
@@ -186,7 +177,6 @@ services:
   meteo_exporter:
     image: apresse/meteofrance_exporter:0.1
     container_name: meteo_exporter
-    logging: *default-logging
     restart: always
     env_file:
       - stack.env
@@ -219,3 +209,40 @@ services:
     restart: always
     volumes:
       - pve_exporter-config:/etc/prometheus/
+
+  victoria_metrics:
+    image: victoriametrics/victoria-metrics:v1.120.0
+    restart: always
+    container_name: victoria_metrics
+    ports:
+      - 8428:8428
+      - 8089:8089
+      - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - vm_data:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+      - "--retentionPeriod=90d"
+
+  vm_agent:
+    image: victoriametrics/vmagent:v1.120.0
+    restart: always
+    container_name: vm_agent
+    depends_on:
+      - "victoria_metrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - vm_agentdata:/vmagentdata
+      - vm_config:/etc/prometheus/
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoria_metrics:8428/api/v1/write"
+
