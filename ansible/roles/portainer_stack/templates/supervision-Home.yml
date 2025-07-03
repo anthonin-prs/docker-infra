@@ -1,0 +1,248 @@
+volumes:
+  prometheus-data:
+  prometheus-config:
+  grafana-data:
+  grafana-config:
+  loki-config:
+  loki-data:
+  legrand_exporter-config:
+  meross_exporter-config:
+  pve_exporter-config:
+  vm_agentdata:
+  vm_config:
+  vm_data:
+
+services:
+  grafana:
+    image: grafana/grafana:12.0.2
+    container_name: grafana
+    restart: always
+    volumes:
+      - grafana-data:/var/lib/grafana/
+      - grafana-config:/etc/grafana/
+    env_file:
+      - stack.env
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          orgId: 1
+          url: http://loki:3100
+          basicAuth: false
+          version: 1
+          editable: false
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          isDefault: true
+          url: http://prometheus:9090
+          jsonData:
+            httpMethod: POST
+            manageAlerts: true
+            prometheusType: Prometheus
+            prometheusVersion: 2.27.0
+            cacheLevel: 'High'
+            disableRecordingRules: false
+            incrementalQueryOverlapWindow: 10m
+        EOF
+
+        /run.sh
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
+
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki
+    restart: always
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki-data:/loki
+      - loki-config:/etc/loki/
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 800M
+        reservations:
+          cpus: '0.2'
+          memory: 150M
+
+  prometheus:
+    image: prom/prometheus:v2.27.0
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus-data:/prometheus
+      - prometheus-config:/etc/prometheus/
+    command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 800M
+        reservations:
+          cpus: '0.2'
+          memory: 150M
+
+  blackbox_exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: blackbox_exporter
+    restart: always
+    #    ports:
+    #      - "9115:9115"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: always
+    # ports:
+    # - 8091:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  legrand_exporter:
+    image: apresse/legrand_exporter:1.0
+    container_name: legrand_exporter
+    restart: always
+    env_file:
+      - stack.env
+    volumes:
+    - legrand_exporter-config:/app/src
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  meross_exporter:
+    image: apresse/meross_exporter:0.2
+    container_name: meross_exporter
+    restart: no
+    env_file:
+      - stack.env
+    volumes:
+    - meross_exporter-config:/app/src
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  meteo_exporter:
+    image: apresse/meteofrance_exporter:0.1
+    container_name: meteo_exporter
+    restart: always
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  grafana-to-ntfy:
+    container_name: grafana-to-ntfy
+    image: saibe1111/grafana-to-ntfy
+    restart: always
+    env_file:
+      - stack.env
+
+  qbittorrent_exporter:
+    container_name: qbittorrent_exporter
+    image: ghcr.io/esanchezm/prometheus-qbittorrent-exporter
+    restart: always
+    env_file:
+      - stack.env
+
+  pve_exporter:
+    container_name: pve_exporter
+    image: prompve/prometheus-pve-exporter
+    restart: always
+    volumes:
+      - pve_exporter-config:/etc/prometheus/
+
+  victoria_metrics:
+    image: victoriametrics/victoria-metrics:v1.120.0
+    restart: always
+    container_name: victoria_metrics
+    ports:
+      - 8428:8428
+      - 8089:8089
+      - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - vm_data:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+      - "--retentionPeriod=90d"
+
+  vm_agent:
+    image: victoriametrics/vmagent:v1.120.0
+    restart: always
+    container_name: vm_agent
+    depends_on:
+      - "victoria_metrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - vm_agentdata:/vmagentdata
+      - vm_config:/etc/prometheus/
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoria_metrics:8428/api/v1/write"
+

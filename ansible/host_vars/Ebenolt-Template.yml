@@ -7,7 +7,25 @@ backups:
       - "/var/lib/docker/volumes/backingFsBlockDev"
     retention_days: "10"
 
-portainer_stack:
-  - name: homepage
-    file: homepage.yml
-    env: homepage.env
+stack:
+  - name: docmost
+    file: docmost.yml
+    env: docmost.env
+  - name: infisical
+    file: infisical.yml
+    env: infisical.env
+  - name: wakeonlan
+    file: wakeonlan.yml
+  - name: supervision
+    file: supervision-VPS.yml
+    env: supervision.env
+  - name: tandoor
+    file: tandoor.yml
+    env: tandoor.env
+  - name: vaultwarden
+    file: vaultwarden.yml
+    env: vaultwarden.env
+  - name: web
+    file: web-Home.yml
+  - name: wireguard
+    file: wireguard.yml

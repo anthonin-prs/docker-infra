@@ -1,0 +1,125 @@
+volumes:
+  qbittorrent-config:
+  plex-config:
+  radarr-config:
+  sonarr-config:
+  prowlarr-config:
+  tautulli-config:
+  overseer_config:
+
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    network_mode: host
+    privileged: true
+    environment:
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - TZ=Europe/Paris
+#      - VERSION=docker
+      # - PLEX_CLAIM=claim-xxxxx
+    volumes:
+      - plex-config:/config
+      - /mnt/Multimedia:/movies
+      - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8081
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/Multimedia:/data
+      - qbittorrent-config:/config
+    restart: unless-stopped
+#    ports: # qbittorrent
+#      - 8081:8081 # qbittorrent
+    network_mode: "service:gluetun"
+
+  gluetun:
+    image: qmcgaw/gluetun:v3.40.0
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    env_file: "stack.env"
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8003:8000/tcp # Admin
+      - 8080:8080/tcp # gluetun
+      - 8081:8081/tcp # gluetun
+    restart: unless-stopped
+
+# Sonarr is used to query, add downloads to the download queue and index TV shows
+  # https://sonarr.tv/
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    env_file: "stack.env"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/Multimedia:/data
+      - sonarr-config:/config
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  # Radarr is used to query, add downloads to the download queue and index Movies
+  # https://radarr.video/
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    env_file: "stack.env"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/Multimedia:/data
+      - radarr-config:/config
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+
+  # Prowlarr is our torrent indexer/searcher. Sonarr/Radarr use Prowlarr as a source
+  # https://prowlarr.com/
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr
+    container_name: prowlarr
+    env_file: "stack.env"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - prowlarr-config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    container_name: tautulli
+    env_file: "stack.env"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - tautulli-config:/config
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/Paris
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - overseer_config:/app/config
+    restart: unless-stopped

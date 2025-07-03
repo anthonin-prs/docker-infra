@@ -1,0 +1,266 @@
+version: "3.8"
+
+volumes:
+  nginx-data:
+  nginx-certs:
+  mariadb-data:
+  access_pc-data:
+  private:
+  access_pc-gestion-data:
+  access_pc-clients-data:
+  signature-generator-data:
+  anthonin-fr-data:
+  ebenolt-com-data:
+  ip-ebe-data:
+  sutom-data:
+  share-data:
+  fileserver:
+  umami-db-data:
+  homepage-config:
+  ntfy-config:
+  ntfy-cache:
+
+services:
+  nginx:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - nginx-data:/data
+      - nginx-certs:/etc/letsencrypt
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.2'
+          memory: 100M
+
+  database:
+    image: mariadb:latest
+    container_name: database
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.2'
+          memory: 100M
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "8081:80"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      - PMA_HOST=database
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+
+  access-pc: &service_default
+    image: apresse/php_fpm_pdo_nginx:0.7
+    container_name: access-pc
+    restart: always
+    # ports:
+    #   - "8080:8080"
+    volumes:
+      - access_pc-data:/var/www/html
+      - private:/var/www/private
+    env_file:
+      - stack.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+        reservations:
+          cpus: '0.2'
+          memory: 100M
+
+  access-pc-gestion:
+    <<: *service_default
+    container_name: access-pc-gestion
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - access_pc-gestion-data:/var/www/html
+      - private:/var/www/private
+
+
+  access-pc-clients:
+    <<: *service_default
+    container_name: access-pc-clients
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - access_pc-clients-data:/var/www/html
+      - private:/var/www/private
+
+
+  signature-generator:
+    <<: *service_default
+    container_name: signature-generator
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - signature-generator-data:/var/www/html
+
+  anthonin-fr:
+    <<: *service_default
+    container_name: anthonin-fr
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - anthonin-fr-data:/var/www/html
+
+  ebenolt-com:
+    <<: *service_default
+    container_name: ebenolt-com
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - ebenolt-com-data:/var/www/html
+
+  ip-ebe:
+    <<: *service_default
+    container_name: ip-ebe
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - ip-ebe-data:/var/www/html
+
+  sutom:
+    <<: *service_default
+    container_name: sutom
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - sutom-data:/var/www/html
+
+
+
+  share-ssh-server:
+    image: linuxserver/openssh-server
+    container_name: ssh-server
+    restart: always
+    ports:
+      - "222:2222"
+    env_file:
+      - stack.env
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=Etc/UTC
+      - SUDO_ACCESS=true
+      # - PASSWORD_ACCESS=true
+      # - USER_PASSWORD=password
+      - USER_NAME=ebenolt
+    volumes:
+      - share-data:/mnt/data
+
+  share-web:
+    <<: *service_default
+    container_name: share-web
+    ports:
+      - "8082:8080"
+    volumes:
+      - share-data:/var/www/html:ro
+
+  fileserver:
+    container_name: fileserver
+    image: machines/filestash
+    restart: always
+    environment:
+      - APPLICATION_URL=file.ebe.ovh
+    ports:
+      - "8334:8334"
+    volumes:
+      - fileserver:/app/data/state/
+
+  umami:
+    container_name: umami
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - "3443:3000"
+    environment:
+      DATABASE_TYPE: postgresql
+    env_file:
+      - stack.env
+    depends_on:
+      umami-db:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  umami-db:
+    container_name: umami-db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: umami
+    env_file:
+      - stack.env
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    # ports:
+    #   - 3000:3000
+    env_file:
+      - stack.env
+    volumes:
+      - homepage-config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  ntfy:
+    <<: *service_default
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - ntfy-cache:/var/cache/ntfy
+      - ntfy-config:/etc/ntfy
+    # ports:
+    #   - 80:80

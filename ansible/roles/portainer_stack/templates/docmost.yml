@@ -1,0 +1,43 @@
+version: "3"
+
+volumes:
+  docmost:
+  db_data:
+  redis_data:
+
+services:
+  docmost:
+    image: docmost/docmost:0.21.0
+    container_name: docmost
+    env_file:
+      - stack.env
+    depends_on:
+      - docdb
+      - docredis
+    environment:
+      APP_URL: "https://doc.anthonin.fr"
+      REDIS_URL: "redis://docredis:6379"
+    ports:
+      - "3080:3000"
+    restart: unless-stopped
+    volumes:
+      - docmost:/app/data/storage
+
+  docdb:
+    image: postgres:16-alpine
+    container_name: docdb
+    env_file:
+      - stack.env
+    environment:
+      POSTGRES_DB: docmost
+      POSTGRES_USER: docmost
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  docredis:
+    image: redis:7.2-alpine
+    container_name: docredis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
