@@ -3,7 +3,6 @@ sys_locales:
   - fr_FR.UTF-8
   - en_US.UTF-8
 sys_timezone: Europe/Paris
-portainer_version: latest
 
 ntfy_url: "{{ntfy_base_url}}/backups"
 ntfy_title: Backup {{ansible_hostname}}

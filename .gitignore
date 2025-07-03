@@ -11,3 +11,4 @@ ansible/roles/user_conf/files/SSH/Perso_SSH
 ansible/group_vars/all.yml
 stacks/infisical/.env
 .env
+*.env

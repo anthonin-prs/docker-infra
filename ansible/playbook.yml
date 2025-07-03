@@ -1,18 +1,23 @@
 - name: Installation et configuration de l'infra
   hosts: infra
   tasks:
-      - ansible.builtin.import_role:
-          name: system-prep
-        tags: sysprep
+    - ansible.builtin.import_role:
+        name: system-prep
+      tags: sysprep
 
-      - ansible.builtin.import_role:
-          name: monitoring
-        tags: monitoring
+    - ansible.builtin.import_role:
+        name: monitoring
+      tags: monitoring
 
-      # - ansible.builtin.import_role:
-      #     name: iptables
-      #   tags: firewall
-      
-      - ansible.builtin.import_role:
-          name: user_conf
-        tags: user-conf
+    # - ansible.builtin.import_role:
+    #     name: iptables
+    #   tags: firewall
+
+    - ansible.builtin.import_role:
+        name: user_conf
+      tags: user-conf
+
+    - ansible.builtin.import_role:
+        name: portainer_stack
+      when: portainer|default(false)|bool == true
+      tags: portainer
