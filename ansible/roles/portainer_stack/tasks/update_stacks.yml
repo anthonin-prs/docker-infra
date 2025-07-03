@@ -47,6 +47,10 @@
     stack_infos: "{{ get_stack_response.json | json_query('[?Name == `' + stack_name + '`]') | first }}"
   when: stack_name in existing_stacks
 
+- name: "{{ stack_name }} - Clear stack_env_list before parsing"
+  set_fact:
+    stack_env_list: []
+
 - name: "{{ stack_name }} - Parse .env file content in stack_env into env list"
   set_fact:
     stack_env_list: >-

@@ -11,11 +11,11 @@ stack:
   - name: docmost
     file: docmost.yml
     env: docmost.env
+  - name: wakeonlan
+    file: wakeonlan.yml
   - name: infisical
     file: infisical.yml
     env: infisical.env
-  - name: wakeonlan
-    file: wakeonlan.yml
   - name: supervision
     file: supervision-VPS.yml
     env: supervision.env
@@ -25,7 +25,7 @@ stack:
   - name: vaultwarden
     file: vaultwarden.yml
     env: vaultwarden.env
-  - name: web
-    file: web-Home.yml
   - name: wireguard
     file: wireguard.yml
+  - name: web
+    file: web-Home.yml
