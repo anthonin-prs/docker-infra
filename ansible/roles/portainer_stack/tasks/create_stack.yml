@@ -32,6 +32,7 @@
   register: get_stack_response
   when: jwt_token is defined
 
+# TODO: Remove every stack not present locally
 - name: "{{ stack_name }} Check if the stack exists"
   set_fact:
     stack_not_exists: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | length <= 0 }}"
