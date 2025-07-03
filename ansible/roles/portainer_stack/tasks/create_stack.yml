@@ -61,6 +61,8 @@
     stack_env_kv_list: []
   when: stack_env_list is defined
 
+# TODO: Empty env var when spinoff new stack
+
 - name: "{{ stack_name }} Set default stack_env_kv_list"
   set_fact:
     stack_env_kv_list: []
