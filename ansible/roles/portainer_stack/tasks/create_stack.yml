@@ -41,6 +41,7 @@
 - name: "{{ stack_name }} Getting stack ID"
   set_fact:
     stack_infos: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | first }}"
+  when: stack_not_exists == false
 
 - name: "{{ stack_name }} Parse .env file content in stack_env into env list"
   set_fact:
@@ -82,6 +83,11 @@
   register: create_stack_response
   when: jwt_token is defined and stack_not_exists
 
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack creation response"
+  fail:
+    msg: "Failed to create stack in Portainer"
+  when: stack_not_exists and create_stack_response.status != 200
+
 - name: "{{ stack_name }} [{{ stack_infos.Id }}] Update a stack in Portainer"
   uri:
     url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
@@ -96,10 +102,10 @@
       fromAppTemplate: false
       StackFileContent: "{{ stack_compose }}"
       env: "{{ stack_env_kv_list }}"
-  register: create_stack_response
+  register: update_stack_response
   when: jwt_token is defined and stack_not_exists == False
 
-- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack creation/update response"
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack update response"
   fail:
-    msg: "Failed to create/update stack in Portainer"
-  when: create_stack_response.status != 200
+    msg: "Failed to update stack in Portainer"
+  when: stack_not_exists == False and update_stack_response.status != 200
