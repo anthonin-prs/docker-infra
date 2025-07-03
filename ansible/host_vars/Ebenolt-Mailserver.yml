@@ -6,4 +6,4 @@ backups:
       - "/var/lib/docker/volumes/metadata.db"
       - "/var/lib/docker/volumes/backingFsBlockDev"
       - "/var/lib/docker/volumes/sup_prometheus-data/*"
-    retention_days: "15"
+    retention_days: "10"

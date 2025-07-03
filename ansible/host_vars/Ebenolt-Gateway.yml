@@ -8,9 +8,9 @@ backups:
       - "/var/lib/docker/volumes/supervision_prometheus-data/*"
       - "/var/lib/docker/volumes/plex_plex-config/*"
       - "/var/lib/docker/volumes/plex_radarr-config/*"
-    retention_days: "15"
+    retention_days: "10"
   old:
     name: "old"
     source_folder: "/home/ebenolt/old"
     excluded: ""
-    retention_days: "7"
+    retention_days: "2"
