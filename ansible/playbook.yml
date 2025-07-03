@@ -19,10 +19,10 @@
 
     - ansible.builtin.import_role:
         name: portainer
-      when: portainer|default(false)|bool == true
+      when: inventory_hostname in groups["Portainer"]
       tags: portainer
 
     - ansible.builtin.import_role:
         name: portainer_stack
-      when: portainer|default(false)|bool == true
-      tags: portainer
+      when: inventory_hostname in groups["Portainer"]
+      tags: portainer_stack

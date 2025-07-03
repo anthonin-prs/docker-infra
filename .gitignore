@@ -12,3 +12,4 @@ ansible/group_vars/all.yml
 stacks/infisical/.env
 .env
 *.env
+ansible/group_vars/Portainer.yml

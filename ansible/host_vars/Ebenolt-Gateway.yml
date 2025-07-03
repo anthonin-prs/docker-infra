@@ -14,3 +14,11 @@ backups:
     source_folder: "/home/ebenolt/old"
     excluded: ""
     retention_days: "2"
+
+portainer_stack:
+  - name: homepage
+    file: homepage.yml
+    env: homepage.env
+  - name: homepage2
+    file: homepage2.yml
+    env: homepage2.env

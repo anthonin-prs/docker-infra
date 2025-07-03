@@ -7,3 +7,11 @@ backups:
       - "/var/lib/docker/volumes/backingFsBlockDev"
       - "/var/lib/docker/volumes/supervision_prometheus-data/*"
     retention_days: "10"
+
+portainer_stack:
+  - name: homepage
+    file: homepage.yml
+    env: homepage.env
+  - name: homepage2
+    file: homepage2.yml
+    env: homepage2.env

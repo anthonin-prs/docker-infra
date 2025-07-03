@@ -9,10 +9,4 @@
     stack_compose: "{{ lookup('ansible.builtin.template', role_path + '/templates/' + item.file) }}"
     stack_env: "{{ lookup('ansible.builtin.file', role_path + '/files/' + item.env) }}"
 
-  with_items:
-    - name: homepage
-      file: homepage.yml
-      env: homepage.env
-    - name: homepage2
-      file: homepage2.yml
-      env: homepage2.env
+  with_items: "{{ portainer_stack }}"

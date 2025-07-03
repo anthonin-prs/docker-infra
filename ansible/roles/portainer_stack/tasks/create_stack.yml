@@ -34,9 +34,13 @@
 
 - name: "{{ stack_name }} Check if the stack exists"
   set_fact:
-    stack_not_exists: "{{ response_data | json_query('[?Name == `'+ stack_name +'`]') | length <= 0 }}"
-  vars:
-    response_data: "{{ get_stack_response.json }}"
+    stack_not_exists: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | length <= 0 }}"
+  # vars:
+  #   response_data: "{{ get_stack_response.json }}"
+
+- name: "{{ stack_name }} Getting stack ID"
+  set_fact:
+    stack_infos: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | first }}"
 
 - name: "{{ stack_name }} Parse .env file content in stack_env into env list"
   set_fact:
@@ -78,7 +82,24 @@
   register: create_stack_response
   when: jwt_token is defined and stack_not_exists
 
-- name: "{{ stack_name }} Check stack creation response"
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] Update a stack in Portainer"
+  uri:
+    url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
+    method: PUT
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ jwt_token }}"
+    body_format: json
+    body:
+      name: "{{ stack_name }}"
+      prune: true
+      fromAppTemplate: false
+      StackFileContent: "{{ stack_compose }}"
+      env: "{{ stack_env_kv_list }}"
+  register: create_stack_response
+  when: jwt_token is defined and stack_not_exists == False
+
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack creation/update response"
   fail:
-    msg: "Failed to create stack in Portainer"
-  when: stack_not_exists and create_stack_response.status != 200
+    msg: "Failed to create/update stack in Portainer"
+  when: create_stack_response.status != 200

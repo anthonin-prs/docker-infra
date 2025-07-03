@@ -6,3 +6,8 @@ backups:
       - "/var/lib/docker/volumes/metadata.db"
       - "/var/lib/docker/volumes/backingFsBlockDev"
     retention_days: "10"
+
+portainer_stack:
+  - name: homepage
+    file: homepage.yml
+    env: homepage.env
