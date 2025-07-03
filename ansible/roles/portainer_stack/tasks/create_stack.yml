@@ -54,7 +54,7 @@
         | reject('equalto', '')
         | list
       }}
-  when: stack_env is defined
+  when: stack_env is defined and stack_env != ""
 
 - name: "{{ stack_name }} Initialize empty env list"
   set_fact:
