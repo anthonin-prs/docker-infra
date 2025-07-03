@@ -32,10 +32,6 @@
   register: get_stack_response
   when: jwt_token is defined
 
-- name: "{{ stack_name }} Debug get_stack_response"
-  debug:
-    var: get_stack_response
-
 - name: "{{ stack_name }} Check if the stack exists"
   set_fact:
     stack_not_exists: "{{ response_data | json_query('[?Name == `'+ stack_name +'`]') | length <= 0 }}"
