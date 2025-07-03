@@ -75,6 +75,7 @@
   uri:
     url: "{{ portainer_host }}/api/stacks/create/standalone/string?endpointId={{ endpoint_id }}"
     method: POST
+    timeout: 120
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
@@ -96,6 +97,7 @@
   uri:
     url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
     method: PUT
+    timeout: 120
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
