@@ -61,6 +61,10 @@
     stack_env_kv_list: []
   when: stack_env_list is defined
 
+- name: "{{ stack_name }} Set default stack_env_kv_list"
+  set_fact:
+    stack_env_kv_list: []
+
 - name: "{{ stack_name }} Convert env list to key-value dicts"
   set_fact:
     stack_env_kv_list: "{{ stack_env_kv_list + [{'name': item.split('=', 1)[0], 'value': item.split('=', 1)[1]}] }}"
