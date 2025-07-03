@@ -1,5 +1,8 @@
+- name: Cleanup portainer stacks
+  ansible.builtin.include_tasks: cleanup_stacks.yml
+
 - name: Create portainer stacks
-  ansible.builtin.include_tasks: create_stack.yml
+  ansible.builtin.include_tasks: update_stacks.yml
   vars:
     portainer_host: "{{ portainer_api_url }}"
     admin_user: "{{ portainer_admin_user }}"

@@ -32,19 +32,22 @@
   register: get_stack_response
   when: jwt_token is defined
 
-# TODO: Remove every stack not present locally
-- name: "{{ stack_name }} Check if the stack exists"
+- name: "Default existing stacks"
   set_fact:
-    stack_not_exists: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | length <= 0 }}"
-  # vars:
-  #   response_data: "{{ get_stack_response.json }}"
+    existing_stacks: []
 
-- name: "{{ stack_name }} Getting stack ID"
+- name: "Get existing stacks"
   set_fact:
-    stack_infos: "{{ get_stack_response.json | json_query('[?Name == `'+ stack_name +'`]') | first }}"
-  when: stack_not_exists == false
+    existing_stacks: "{{ existing_stacks | default([]) | union([item.Name]) | difference(['']) }}"
+  no_log: true
+  with_items: "{{ get_stack_response.json }}"
 
-- name: "{{ stack_name }} Parse .env file content in stack_env into env list"
+- name: "{{ stack_name }} - Getting stack ID"
+  set_fact:
+    stack_infos: "{{ get_stack_response.json | json_query('[?Name == `' + stack_name + '`]') | first }}"
+  when: stack_name in existing_stacks
+
+- name: "{{ stack_name }} - Parse .env file content in stack_env into env list"
   set_fact:
     stack_env_list: >-
       {{
@@ -57,24 +60,25 @@
       }}
   when: stack_env is defined and stack_env != ""
 
-- name: "{{ stack_name }} Initialize empty env list"
+- name: "{{ stack_name }} - Initialize empty env list"
   set_fact:
     stack_env_kv_list: []
   when: stack_env_list is defined
 
 # TODO: Empty env var when spinoff new stack
 
-- name: "{{ stack_name }} Set default stack_env_kv_list"
+- name: "{{ stack_name }} - Set default stack_env_kv_list"
   set_fact:
     stack_env_kv_list: []
 
-- name: "{{ stack_name }} Convert env list to key-value dicts"
+- name: "{{ stack_name }} - Convert env list to key-value dicts"
   set_fact:
     stack_env_kv_list: "{{ stack_env_kv_list + [{'name': item.split('=', 1)[0], 'value': item.split('=', 1)[1]}] }}"
+  no_log: true
   loop: "{{ stack_env_list }}"
   when: stack_env_list is defined
 
-- name: "{{ stack_name }} Create a stack in Portainer"
+- name: "{{ stack_name }} - Create a stack in Portainer"
   uri:
     url: "{{ portainer_host }}/api/stacks/create/standalone/string?endpointId={{ endpoint_id }}"
     method: POST
@@ -89,14 +93,14 @@
       StackFileContent: "{{ stack_compose }}"
       env: "{{ stack_env_kv_list }}"
   register: create_stack_response
-  when: jwt_token is defined and stack_not_exists
+  when: jwt_token is defined and stack_name not in existing_stacks
 
-- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack creation response"
+- name: "{{ stack_name }} - [{{ stack_infos.Id }}] Check stack creation response"
   fail:
     msg: "Failed to create stack in Portainer"
-  when: stack_not_exists and create_stack_response.status != 200
+  when: stack_name not in existing_stacks and create_stack_response.status != 200
 
-- name: "{{ stack_name }} [{{ stack_infos.Id }}] Update a stack in Portainer"
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] - Update a stack in Portainer"
   uri:
     url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
     method: PUT
@@ -112,9 +116,9 @@
       StackFileContent: "{{ stack_compose }}"
       env: "{{ stack_env_kv_list }}"
   register: update_stack_response
-  when: jwt_token is defined and stack_not_exists == False
+  when: jwt_token is defined and stack_name in existing_stacks
 
-- name: "{{ stack_name }} [{{ stack_infos.Id }}] Check stack update response"
+- name: "{{ stack_name }} [{{ stack_infos.Id }}] - Check stack update response"
   fail:
     msg: "Failed to update stack in Portainer"
-  when: stack_not_exists == False and update_stack_response.status != 200
+  when: stack_name in existing_stacks and update_stack_response.status != 200
