@@ -18,6 +18,11 @@
       tags: user-conf
 
     - ansible.builtin.import_role:
+        name: portainer
+      when: portainer|default(false)|bool == true
+      tags: portainer
+
+    - ansible.builtin.import_role:
         name: portainer_stack
       when: portainer|default(false)|bool == true
       tags: portainer
