@@ -3,10 +3,9 @@ version: "3.8"
 volumes:
   prometheus-data:
   prometheus-config:
+  grafana-data:
   uptime_kuma-data:
-
-
-
+  
 services:
   prometheus:
     image: prom/prometheus:v2.27.0
@@ -17,16 +16,35 @@ services:
     volumes:
       - prometheus-data:/prometheus
       - prometheus-config:/etc/prometheus/
-    command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
+    command:
+      [
+        '--config.file=/etc/prometheus/prometheus.yml',
+        '--storage.tsdb.retention.time=90d'
+      ]
     deploy:
       resources:
         limits:
-          cpus: '1'
-          memory: 800M
+          cpus: '0.5'
+          memory: 500M
         reservations:
+          cpus: '0.1'
+          memory: 50M
+
+  blackbox_exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: blackbox_exporter
+    restart: always
+#    ports:
+#      - "9115:9115"
+    deploy:
+      resources:
+        limits:
           cpus: '0.2'
           memory: 150M
-
+        reservations:
+          cpus: '0.1'
+          memory: 20M
+  
   uptime-kuma:
     image: louislam/uptime-kuma:1
     container_name: uptime-kuma
@@ -34,8 +52,8 @@ services:
     ports:
       - 3001:3001
     volumes:
-      - uptime_kuma-data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock
+    - uptime_kuma-data:/app/data
+    - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       resources:
         limits:
@@ -52,10 +70,10 @@ services:
     # ports:
     # - 8091:8080
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
     deploy:
       resources:
         limits:

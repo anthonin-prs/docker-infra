@@ -1,0 +1,24 @@
+version: "3.8"
+
+volumes:
+  homebridge-data:
+
+services:
+  homebridge:
+    image: homebridge/homebridge:latest
+    container_name: homebridge
+    restart: always
+    network_mode: host
+    ports:
+      - "8581:8581"
+    volumes:
+      - homebridge-data:/homebridge
+
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1000M
+        reservations:
+          cpus: '0.4'
+          memory: 300M

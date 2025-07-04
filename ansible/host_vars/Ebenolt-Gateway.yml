@@ -16,6 +16,9 @@ backups:
     retention_days: "2"
 
 portainer_stack:
-  - name: wakeonlan
-    file: wakeonlan.yml
-    env: ""
+  - name: homebridge
+    file: homebridge.yml
+  - name: supervision
+    file: supervision-Home.yml
+  - name: web
+    file: web-Home.yml

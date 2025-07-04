@@ -2,7 +2,6 @@ version: "3.8"
 
 volumes:
   mail-data:
-  well_known:
 
 services:
   mailserver:
@@ -10,16 +9,16 @@ services:
     container_name: mail_server
     restart: always
     network_mode: host
-    ports:
-      - "25:25"
-      - "80:80"
-      - "110:110"
-      - "143:143"
-      - "443:443"
-      - "465:465"
-      - "587:587"
-      - "993:993"
-      - "995:995"
+    # ports:
+    #   - "25:25"
+    #   - "80:80"
+    #   - "110:110"
+    #   - "143:143"
+    #   - "443:443"
+    #   - "465:465"
+    #   - "587:587"
+    #   - "993:993"
+    #   - "995:995"
     volumes:
       - mail-data:/data
     environment:

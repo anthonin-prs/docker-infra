@@ -9,9 +9,23 @@ backups:
     retention_days: "10"
 
 portainer_stack:
-  - name: homepage
-    file: homepage.yml
-    env: homepage.env
-  - name: homepage2
-    file: homepage2.yml
-    env: homepage2.env
+  - name: docmost
+    file: docmost.yml
+    env: docmost.env
+  - name: infisical
+    file: infisical.yml
+    env: infisical.env
+  - name: supervision
+    file: supervision-VPS.yml
+    env: supervision-VPS.env
+  - name: tandoor
+    file: tandoor.yml
+    env: tandoor.env
+  - name: vaultwarden
+    file: vaultwarden.yml
+    env: vaultwarden.env
+  - name: web
+    file: web-VPS.yml
+    env: web-VPS.env
+  - name: wireguard
+    file: wireguard.yml
