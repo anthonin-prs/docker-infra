@@ -12,4 +12,4 @@ stack:
   - name: mail
     file: mail.yml
   - name: supervision
-    file: supervision-VPS.yml
+    file: supervision-Mail.yml

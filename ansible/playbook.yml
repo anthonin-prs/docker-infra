@@ -15,7 +15,7 @@
 
     - ansible.builtin.import_role:
         name: user_conf
-      tags: user-conf
+      tags: user_conf
 
     - ansible.builtin.import_role:
         name: portainer
