@@ -1,0 +1,17 @@
+name: Test CI Local Runner
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-job:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Echo content
+        run: curl -s https://ip.ebe.ovh
+  
