@@ -2,7 +2,7 @@
 - name: Create user
   user:
     name: "{{ final_user }}"
-    password: "{{ final_user_pass | password_hash('sha512') }}"
+    password: "{{ final_user_pass | string | password_hash('sha512') }}"
     shell: /bin/bash
 
 - name: Add user to sudoers
