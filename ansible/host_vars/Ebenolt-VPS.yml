@@ -8,7 +8,7 @@ backups:
       - "/var/lib/docker/volumes/supervision_prometheus-data/*"
     retention_days: "10"
 
-portainer_stack:
+stack:
   - name: docmost
     file: docmost.yml
     env: docmost.env

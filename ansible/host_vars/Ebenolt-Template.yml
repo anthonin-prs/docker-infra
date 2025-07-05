@@ -18,7 +18,7 @@ stack:
     env: infisical.env
   - name: supervision
     file: supervision-VPS.yml
-    env: supervision.env
+    env: supervision-Home.env
   - name: tandoor
     file: tandoor.yml
     env: tandoor.env

@@ -1,9 +1,11 @@
 #!/bin/bash
 
+#!/bin/bash
+conf_file=$@
 
-lasts=$(aws s3 ls {{ s3_bucket_name }} | sort --reverse | grep .tar | grep $(hostname) | awk '{ print $4 }')
 
-for backup in $lasts;
+jq -r -c .backups[].name $conf_file | while read backup_name
 do
-    aws s3 cp s3://{{ s3_bucket_name }}/$backup .
+	last=$(aws s3 ls {{ s3_bucket_name }} | sort --reverse | grep .tar | grep $(hostname) | grep $backup_name | awk '{ print $4 }' | head -1)
+	aws s3 cp s3://{{ s3_bucket_name }}/$last .
 done
