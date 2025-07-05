@@ -8,4 +8,6 @@ ansible/roles/user_conf/files/GPG/GPG_Perso.asc
 ansible/roles/user_conf/files/SSH/Perso_SSH
 .env
 *.env
-vault_pass
+vault_passstacks.tar.gz
+stacks.tar.gz
+ansible/vault_pass
