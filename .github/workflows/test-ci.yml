@@ -8,10 +8,10 @@ on:
 
 jobs:
   test-job:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Echo content
-        run: curl -s https://ip.ebe.ovh
+        run: curl -s https://ip.ebe.ovh; whoami; uname -a
   
