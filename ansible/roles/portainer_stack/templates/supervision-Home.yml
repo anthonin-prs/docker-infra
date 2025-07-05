@@ -141,7 +141,7 @@ services:
           memory: 20M
 
   legrand_exporter:
-    image: apresse/legrand_exporter:1.0
+    image: apresse/legrand_exporter:1.1
     container_name: legrand_exporter
     restart: always
     env_file:
