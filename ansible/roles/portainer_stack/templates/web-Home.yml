@@ -17,8 +17,6 @@ services:
     volumes:
       - nginx-data:/data
       - nginx-certs:/etc/letsencrypt
-    env_file:
-      - stack.env
     deploy:
       resources:
         limits:

@@ -15,10 +15,11 @@ backups:
     excluded: ""
     retention_days: "2"
 
-portainer_stack:
+stack:
   - name: homebridge
     file: homebridge.yml
   - name: supervision
     file: supervision-Home.yml
+    env: supervision-Home.env
   - name: web
     file: web-Home.yml
