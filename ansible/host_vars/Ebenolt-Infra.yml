@@ -1,0 +1,7 @@
+backups:
+  home_dir:
+    name: "home_dir"
+    source_folder: "/home/ebenolt/*runner"
+    excluded:
+      - ""
+    retention_days: "5"
