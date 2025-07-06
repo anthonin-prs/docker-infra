@@ -10,3 +10,4 @@ ansible/roles/user_conf/files/SSH/Perso_SSH
 *.env
 stacks.tar.gz
 ansible/vault_pass
+ansible/ansible.cfg
