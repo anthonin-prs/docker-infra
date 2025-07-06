@@ -1,0 +1,26 @@
+---
+- name: Configure user "{{ final_user }}"
+  ansible.builtin.include_tasks: prep_user.yml
+
+- name: Configure S3
+  ansible.builtin.include_tasks: configure_s3.yml
+  when: backups is defined
+
+- name: Config backup
+  ansible.builtin.include_tasks: config_backups.yml
+  when: backups is defined
+
+- name: Mount NFS
+  ansible.builtin.include_tasks: mount_nfs.yml
+  when: nfs_mount is defined
+
+- name: Seed script
+  copy:
+    src: "files/seed_script.sh"
+    dest: "~/seed.sh"
+    owner: "{{ final_user }}"
+    group: "{{ final_user }}"
+    mode: 0750
+  become: true
+  become_user: "{{ final_user }}"
+  when: inventory_hostname in groups["VMs"]

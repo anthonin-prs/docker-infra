@@ -1,0 +1,37 @@
+---
+- name: Create S3 directory
+  ansible.builtin.file:
+    path: ~/.aws
+    state: directory
+    mode: "0700"
+  become: true
+  become_user: "{{ item }}"
+  with_items:
+    - root
+    - "{{ final_user }}"
+
+- name: S3 Config
+  template:
+    src: templates/s3_config.j2
+    dest: ~/.aws/config
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0644
+  become: true
+  become_user: "{{ item }}"
+  with_items:
+    - root
+    - "{{ final_user }}"
+
+- name: S3 Creds
+  template:
+    src: templates/s3_credentials.j2
+    dest: ~/.aws/credentials
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0644
+  become: true
+  become_user: "{{ item }}"
+  with_items:
+    - root
+    - "{{ final_user }}"
