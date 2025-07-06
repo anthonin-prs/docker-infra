@@ -1,7 +1,6 @@
 backups:
   home_dir:
     name: "home_dir"
-    source_folder: "/home/ebenolt/*runner"
-    excluded:
-      - ""
+    source_folder: "/home/ebenolt/"
+    excluded: []
     retention_days: "5"
