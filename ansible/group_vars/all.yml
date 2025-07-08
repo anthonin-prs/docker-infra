@@ -39,6 +39,7 @@ packages:
 pip_packages:
   - requests
   - ansible
+  - passlib
   # - awscli==1.32.107
   # - awscli_plugin_endpoint==0.4
 

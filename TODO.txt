@@ -1,6 +1,4 @@
 Deploy runner through Ansible:
-    - Trash and redeploy VM
-    - Setup VM with ansible
     - Create playbook:
         - GPG setup and install
             gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
@@ -9,4 +7,3 @@ Deploy runner through Ansible:
             git secret reveal -p "$GPG_PASSPHRASE"
             source: https://sobolevn.me/git-secret/
         - Deploy Runner through Git
-        
