@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Reveal
-        run: git secret reveal -f -p '$GPG_PASSPHRASE'
+        run: git secret reveal -f -p '$(echo $GPG_PASSPHRASE | base64 -d)'
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
