@@ -2,11 +2,10 @@
 .gitsecret/keys/random_seed
 !*.secret
 stacks/adguard/AdGuardHome.yaml
-ansible/roles/system-prep/files/SSH/Perso_SSH
-ansible/roles/system-prep/files/SSH/Perso_SSH.pub
-ansible/roles/user_conf/files/GPG/GPG_Perso.asc
 ansible/roles/user_conf/files/SSH/Perso_SSH
 .env
 *.env
 stacks.tar.gz
 ansible/vault_pass
+ansible/ansible.cfg
+ansible/roles/runner/files/GPG/CICD.asc

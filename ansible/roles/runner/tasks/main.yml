@@ -1,0 +1,11 @@
+---
+- name: "Configure runner {{ runner_name }}"
+  ansible.builtin.include_tasks: config_runner.yml
+  vars:
+    runner_name: "{{ item.name }}"
+    runner_url: "{{ item.url }}"
+    runner_token: "{{ item.token }}"
+  with_items: "{{ gh_runners }}"
+
+- name: "Configure GPG Key"
+  ansible.builtin.include_tasks: config_gpg.yml

@@ -1,0 +1,54 @@
+- name: Create directory
+  ansible.builtin.file:
+    path: "~/{{ runner_name }}"
+    state: directory
+    mode: "0755"
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Populate service facts
+  service_facts:
+
+- name: Forge service name
+  set_fact:
+    service_name: "actions.runner.{{runner_url | regex_replace('.*/([^/]+/[^/]+)$', '\\1') | replace('/', '-')}}.{{ ansible_hostname }}.service"
+
+- name: Check that the svc file exists
+  stat:
+    path: "~/{{ runner_name }}/svc.sh"
+  register: svc_file
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Download runner archive
+  ansible.builtin.get_url:
+    url: "https://github.com/actions/runner/releases/download/v{{runner_version}}/actions-runner-linux-x64-{{runner_version}}.tar.gz"
+    dest: "/tmp/actions-runner-linux-x64.tar.gz"
+    checksum: "sha256:{{runner_checksum}}"
+  become: true
+  become_user: "{{ final_user }}"
+  when: not svc_file.stat.exists
+
+- name: Unarchive runner archive
+  unarchive:
+    remote_src: yes
+    src: "/tmp/actions-runner-linux-x64.tar.gz"
+    dest: "~/{{ runner_name }}/"
+  become: true
+  become_user: "{{ final_user }}"
+  when: not svc_file.stat.exists
+
+- name: Install runner
+  shell: "cd ~/{{ runner_name }}/ && ./config.sh --url {{ runner_url }} --token {{ runner_token }} --unattended >> config.log"
+  become: true
+  become_user: "{{ final_user }}"
+  when: not svc_file.stat.exists
+
+- name: Install service
+  shell: "cd /home/{{final_user}}/{{ runner_name }}/ && ./svc.sh {{action}} ; sleep 2"
+  with_items:
+    - "install {{ final_user }}"
+    - "start"
+  when: "service_name not in ansible_facts['services']"
+  loop_control:
+    loop_var: action
