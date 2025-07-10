@@ -1,4 +1,11 @@
 ---
+---
+- name: Check if GPG key is already imported
+  shell: "gpg --list-keys | grep '{{ gpg_id }}'"
+  register: gpg_key_check
+  failed_when: false
+  changed_when: false
+
 - name: Copy GPG key
   copy:
     src: "files/GPG/CICD.asc"
@@ -8,12 +15,15 @@
     mode: 0700
   become: true
   become_user: "{{ final_user }}"
+  no_log: true
+  when: "{{ gpg_key_check.stdout == '' }}"
 
 - name: Import GPG private key
   command: >
     gpg --batch --yes --pinentry-mode loopback --import ~/CICD.asc
   become: true
   become_user: "{{ final_user }}"
+  when: "{{ gpg_key_check.stdout == '' }}"
 
 - name: Delete GPG private key file
   file:
@@ -21,3 +31,4 @@
     state: absent
   become: true
   become_user: "{{ final_user }}"
+  when: "{{ gpg_key_check.stdout == '' }}"
