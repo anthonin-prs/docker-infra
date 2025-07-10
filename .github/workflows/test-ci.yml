@@ -11,11 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Debug
-        run: echo $GPG_PASSPHRASE; echo $GPG_PASSPHRASE | base64 -d
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
       - name: Reveal
         run: git secret reveal -f -p $(echo $GPG_PASSPHRASE | base64 -d)
         env:
@@ -25,6 +20,6 @@ jobs:
     runs-on: self-hosted
     needs: [checkout-and-reveal]
     steps:
-      - name: Reveal
+      - name: Run Playbook
         shell: bash
-        run: cd ansible && ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml --check
+        run: cd ansible && export ANSIBLE_CONFIG=$(pwd)/ansible.cfg && ansible-playbook playbook.yml --check
