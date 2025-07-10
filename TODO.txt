@@ -1,9 +1,0 @@
-Deploy runner through Ansible:
-    - Create playbook:
-        - GPG setup and install
-            gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
-            # Reveal secrets without user interaction and with passphrase. If no passphrase
-            # is created for the key, remove `-p $GPG_PASSPHRASE`
-            git secret reveal -f -p '$GPG_PASSPHRASE'
-            source: https://sobolevn.me/git-secret/
-        - Deploy Runner through Git
