@@ -1,0 +1,23 @@
+---
+- name: Copy GPG key
+  copy:
+    src: "files/GPG/CICD.asc"
+    dest: "~/CICD.asc"
+    owner: "{{ final_user }}"
+    group: "{{ final_user }}"
+    mode: 0700
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Import GPG private key
+  command: >
+    gpg --batch --yes --pinentry-mode loopback --import ~/CICD.asc
+  become: true
+  become_user: "{{ final_user }}"
+
+- name: Delete GPG private key file
+  file:
+    path: "~/CICD.asc"
+    state: absent
+  become: true
+  become_user: "{{ final_user }}"

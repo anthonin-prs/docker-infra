@@ -6,3 +6,6 @@
     runner_url: "{{ item.url }}"
     runner_token: "{{ item.token }}"
   with_items: "{{ gh_runners }}"
+
+- name: "Configure GPG Key"
+  ansible.builtin.include_tasks: config_gpg.yml
