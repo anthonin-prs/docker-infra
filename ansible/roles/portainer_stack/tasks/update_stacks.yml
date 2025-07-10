@@ -77,9 +77,11 @@
 
 - name: "{{ stack_name }} - Convert env list to key-value dicts"
   set_fact:
-    stack_env_kv_list: "{{ stack_env_kv_list + [{'name': item.split('=', 1)[0], 'value': item.split('=', 1)[1]}] }}"
+    stack_env_kv_list: "{{ stack_env_kv_list + [{'name': env_item.split('=', 1)[0], 'value': env_item.split('=', 1)[1]}] }}"
   no_log: true
   loop: "{{ stack_env_list }}"
+  loop_control:
+    loop_var: env_item
   when: stack_env_list is defined
 
 - name: "{{ stack_name }} - Create a stack in Portainer"

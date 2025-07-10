@@ -23,4 +23,4 @@ jobs:
       - name: Run Playbook
         shell: bash
         working-directory: ./ansible
-        run: ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml --diff
+        run: ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml #--diff
