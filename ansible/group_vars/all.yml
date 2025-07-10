@@ -8,16 +8,14 @@ packages:
   - htop
   - screen
   - neofetch
-  - gnupg2
   - gcc
   - make
+  - ncdu
   - acl
   - unzip
   - iptables
   - iptables-persistent
   - libtool
-  - s3cmd
-  - git
   - dnsutils
   - apt-transport-https
   - ca-certificates
@@ -25,7 +23,6 @@ packages:
   - software-properties-common
   - python3
   - python3-pip
-  - git-secret
   - jq
   - sudo
   - nfs-common
@@ -34,14 +31,10 @@ packages:
   - wget
   - syslog-ng
   - awscli
-  - ncdu
+  - s3cmd
 
 pip_packages:
   - requests
-  - ansible
-  - passlib
-  # - awscli==1.32.107
-  # - awscli_plugin_endpoint==0.4
 
 home_ip: !vault |
   $ANSIBLE_VAULT;1.1;AES256
