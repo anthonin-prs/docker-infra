@@ -86,7 +86,7 @@
   uri:
     url: "{{ portainer_host }}/api/stacks/create/standalone/string?endpointId={{ endpoint_id }}"
     method: POST
-    timeout: 120
+    timeout: 240
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
@@ -98,6 +98,7 @@
       env: "{{ stack_env_kv_list }}"
   register: create_stack_response
   when: jwt_token is defined and stack_name not in existing_stacks
+  ignore_errors: true
 
 - name: "{{ stack_name }} - [{{ stack_infos.Id }}] Check stack creation response"
   fail:
@@ -108,7 +109,7 @@
   uri:
     url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
     method: PUT
-    timeout: 120
+    timeout: 240
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
@@ -121,6 +122,7 @@
       env: "{{ stack_env_kv_list }}"
   register: update_stack_response
   when: jwt_token is defined and stack_name in existing_stacks
+  ignore_errors: true
 
 - name: "{{ stack_name }} [{{ stack_infos.Id }}] - Check stack update response"
   fail:

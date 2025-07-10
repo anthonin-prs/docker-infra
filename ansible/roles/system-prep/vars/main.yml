@@ -3,5 +3,3 @@ sys_locales:
   - fr_FR.UTF-8
   - en_US.UTF-8
 sys_timezone: Europe/Paris
-additional_packages: []
-pip_additional_packages: []

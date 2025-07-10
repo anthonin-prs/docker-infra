@@ -32,9 +32,11 @@ packages:
   - syslog-ng
   - awscli
   - s3cmd
+additional_packages: []
 
 pip_packages:
   - requests
+pip_additional_packages: []
 
 home_ip: !vault |
   $ANSIBLE_VAULT;1.1;AES256
