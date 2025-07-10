@@ -17,13 +17,13 @@ jobs:
 
       - name: Debug
         shell: bash
-        run: echo '$GPG_PASSPHRASE'
+        run: echo \'$GPG_PASSPHRASE\'
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Reveal
         shell: bash
-        run: git secret reveal -f -p '$GPG_PASSPHRASE'
+        run: git secret reveal -f -p \'$GPG_PASSPHRASE\'
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
