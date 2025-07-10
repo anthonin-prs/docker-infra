@@ -11,16 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show keys
-        shell: bash
-        run: gpg --list-keys; gpg --list-secret-keys
-
-      - name: Debug
-        shell: bash
-        run: echo \'$GPG_PASSPHRASE\'
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
       - name: Reveal
         shell: bash
         run: git secret reveal -f -p \'$GPG_PASSPHRASE\'
