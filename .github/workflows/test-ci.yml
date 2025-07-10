@@ -17,7 +17,7 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Reveal
-        run: git secret reveal -f -p '$(echo $GPG_PASSPHRASE | base64 -d)'
+        run: git secret reveal -f -p $(echo $GPG_PASSPHRASE | base64 -d)
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
