@@ -18,7 +18,8 @@ jobs:
 
   ansible-run:
     runs-on: self-hosted
+    needs: [checkout-and-reveal]
     steps:
       - name: Reveal
         shell: bash
-        run: cd ansible && ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml --diff --check
+        run: cd ansible && ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml --check
