@@ -2,6 +2,10 @@
   docker_volume:
     name: portainer_data
 
+- name: Pause for 15s for portainer to start
+  pause:
+    seconds: 15
+
 - name: Run portainer
   docker_container:
     name: portainer
