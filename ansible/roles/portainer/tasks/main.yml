@@ -18,3 +18,4 @@
 - name: Config Portainer
   ansible.builtin.include_tasks: config.yml
   when: account_login.failed
+  ignore_errors: true

@@ -31,6 +31,7 @@
     - "neofetch --color_blocks off"
   become: true
   become_user: "{{ final_user }}"
+  no_log: true
 
 - name: Create user SSH directory
   ansible.builtin.file:

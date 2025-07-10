@@ -77,16 +77,18 @@
 
 - name: "{{ stack_name }} - Convert env list to key-value dicts"
   set_fact:
-    stack_env_kv_list: "{{ stack_env_kv_list + [{'name': item.split('=', 1)[0], 'value': item.split('=', 1)[1]}] }}"
+    stack_env_kv_list: "{{ stack_env_kv_list + [{'name': env_item.split('=', 1)[0], 'value': env_item.split('=', 1)[1]}] }}"
   no_log: true
   loop: "{{ stack_env_list }}"
+  loop_control:
+    loop_var: env_item
   when: stack_env_list is defined
 
 - name: "{{ stack_name }} - Create a stack in Portainer"
   uri:
     url: "{{ portainer_host }}/api/stacks/create/standalone/string?endpointId={{ endpoint_id }}"
     method: POST
-    timeout: 120
+    timeout: 240
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
@@ -98,6 +100,7 @@
       env: "{{ stack_env_kv_list }}"
   register: create_stack_response
   when: jwt_token is defined and stack_name not in existing_stacks
+  ignore_errors: true
 
 - name: "{{ stack_name }} - [{{ stack_infos.Id }}] Check stack creation response"
   fail:
@@ -108,7 +111,7 @@
   uri:
     url: "{{ portainer_host }}/api/stacks/{{ stack_infos.Id }}?endpointId={{endpoint_id}}"
     method: PUT
-    timeout: 120
+    timeout: 240
     headers:
       Content-Type: "application/json"
       Authorization: "Bearer {{ jwt_token }}"
@@ -121,6 +124,7 @@
       env: "{{ stack_env_kv_list }}"
   register: update_stack_response
   when: jwt_token is defined and stack_name in existing_stacks
+  ignore_errors: true
 
 - name: "{{ stack_name }} [{{ stack_infos.Id }}] - Check stack update response"
   fail:

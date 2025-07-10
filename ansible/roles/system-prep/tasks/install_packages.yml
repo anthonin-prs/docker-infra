@@ -1,8 +1,8 @@
 ---
-- name: Upgrade all apt packages
-  apt:
-    force_apt_get: yes
-    upgrade: dist
+# - name: Upgrade all apt packages
+#   apt:
+#     force_apt_get: yes
+#     upgrade: dist
 
 # - name: Preconf iptables
 #   ansible.builtin.debconf:
@@ -17,9 +17,22 @@
     state: present
   with_items: "{{ packages }}"
 
+- name: Install additional packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ additional_packages }}"
+
 - name: "Install Python packages"
   pip:
     name: "{{ item }}"
     state: present
     break_system_packages: true
   with_items: "{{ pip_packages }}"
+
+- name: "Install additional Python packages"
+  pip:
+    name: "{{ item }}"
+    state: present
+    break_system_packages: true
+  with_items: "{{ pip_additional_packages }}"
