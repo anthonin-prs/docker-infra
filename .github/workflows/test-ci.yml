@@ -15,4 +15,10 @@ jobs:
         run: git secret reveal -f -p '$GPG_PASSPHRASE'
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-  
+
+  ansible-run:
+    runs-on: self-hosted
+    steps:
+      - name: Reveal
+        shell: bash
+        run: cd ansible && ansible-playbook -i inventory.ini --vault-password-file vault_pass playbook.yml --diff --check
