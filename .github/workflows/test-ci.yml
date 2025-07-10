@@ -21,5 +21,6 @@ jobs:
     needs: [checkout-and-reveal]
     steps:
       - name: Run Playbook
-        # shell: bash
-        run: cd ansible && export ANSIBLE_CONFIG=$(pwd)/ansible.cfg && ansible-playbook playbook.yml --check
+        shell: bash
+        working-directory: ./ansible
+        run: pwd && export ANSIBLE_CONFIG=$(pwd)/ansible.cfg && ansible-playbook playbook.yml --check
