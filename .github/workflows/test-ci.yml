@@ -2,7 +2,7 @@ name: Test CI Local Runner
 
 on:
   push:
-    branches: [ "cicd" ]
+    branches: [ "main" ]
 
 jobs:
   checkout-and-reveal:
