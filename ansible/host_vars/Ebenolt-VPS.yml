@@ -32,3 +32,5 @@ stack:
   - name: rallly
     file: rallly.yml
     env: rallly.env
+  - name: actual
+    file: actual.yml
