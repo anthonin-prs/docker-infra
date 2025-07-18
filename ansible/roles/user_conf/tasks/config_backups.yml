@@ -34,7 +34,7 @@
     name: "Backup docker volumes"
     minute: "0"
     hour: "3"
-    job: 'cd /home/{{ final_user }}/backup/ && ./backup.sh config.json && curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_success.ntfy_content}}" -H "Tags: {{backup_success.ntfy_icon}}" || curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_error.ntfy_content}}" -H "Tags: {{backup_error.ntfy_icon}}"'
+    job: 'cd /home/{{ final_user }}/backup/ && source ../.bashrc && ./backup.sh config.json && curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_success.ntfy_content}}" -H "Tags: {{backup_success.ntfy_icon}}" || curl {{ntfy_url}} -H "Title: {{ntfy_title}}" -d "{{backup_error.ntfy_content}}" -H "Tags: {{backup_error.ntfy_icon}}"'
   become: true
   become_user: "{{ final_user }}"
 
