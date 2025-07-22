@@ -1,8 +1,17 @@
 ---
 # tasks file for monitoring
 
-- name: Install Node Exporter
-  ansible.builtin.include_tasks: install_node.yml
+# Clean up legacy monitoring services before installing Alloy
+# - name: Cleanup legacy monitoring services
+#   ansible.builtin.include_tasks: cleanup_legacy.yml
 
-- name: Install Promtail
-  ansible.builtin.include_tasks: install_promtail.yml
+# Install Grafana Alloy (replaces both Node Exporter and Promtail)
+- name: Install Grafana Alloy
+  ansible.builtin.include_tasks: install_alloy.yml
+
+# Legacy installations (commented out - replaced by Alloy)
+# - name: Install Node Exporter
+#   ansible.builtin.include_tasks: install_node.yml
+
+# - name: Install Promtail
+#   ansible.builtin.include_tasks: install_promtail.yml

@@ -17,7 +17,6 @@ gpg_id: !vault |
 
 additional_packages:
   - git
-  - gnupg2
   - git-secret
 
 pip_additional_packages:

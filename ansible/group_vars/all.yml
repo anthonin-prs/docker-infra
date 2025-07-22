@@ -32,6 +32,8 @@ packages:
   - syslog-ng
   - awscli
   - s3cmd
+  - gnupg2
+
 additional_packages: []
 
 pip_packages:
@@ -51,7 +53,9 @@ home_ip: !vault |
 ##
 node_exporter_version: 1.8.2
 promtail_version: 3.3.2
+# alloy_version: 1.10.0
 loki_url: https://loki.home.ebe.ovh
+prometheus_url: https://vm.home.ebe.ovh
 
 ##
 ## Notification

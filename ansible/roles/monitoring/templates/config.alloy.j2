@@ -1,0 +1,130 @@
+livedebugging {
+  enabled = true
+}
+// ###############################
+// #### Metrics Configuration ####
+// ###############################
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "{{ prometheus_url }}/api/v1/write"
+  }
+  external_labels = {
+    hostname = env("HOSTNAME"),
+  }
+}
+
+
+prometheus.exporter.unix "node_exporter" {
+  include_exporter_metrics = true
+  disable_collectors       = ["mdadm"]
+}
+
+prometheus.scrape "node_exporter" {
+  targets    = prometheus.exporter.unix.node_exporter.targets
+  forward_to = [prometheus.remote_write.default.receiver]
+  scrape_interval = "60s"
+  metrics_path    = "/metrics"
+}
+
+prometheus.scrape "alloy" {
+  targets = [{
+    __address__ = "127.0.0.1:12345",
+  }]
+  forward_to      = [prometheus.remote_write.default.receiver]
+  scrape_interval = "60s"
+  metrics_path    = "/metrics"
+  job_name        = "alloy"
+}
+
+prometheus.exporter.cadvisor "containers" {
+  docker_host = "unix:///var/run/docker.sock"
+  storage_duration = "5m"
+}
+
+prometheus.scrape "containers" {
+  targets    = prometheus.exporter.cadvisor.containers.targets
+  forward_to = [ prometheus.remote_write.default.receiver ]
+  scrape_interval = "30s"
+  job_name        = "cadvisor"
+}
+
+
+
+
+// ###############################
+// #### Logging Configuration ####
+// ###############################
+
+loki.write "default" {
+  endpoint {
+    url = "{{ loki_url }}/loki/api/v1/push"
+  }
+  external_labels = {
+    hostname = env("HOSTNAME"),
+  }
+}
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+loki.source.file "system_logs" {
+  targets = [
+    {
+      __path__ = "/var/log/syslog",
+      job      = "sys_syslog",
+    },
+    {
+      __path__ = "/var/log/messages",
+      job      = "sys_messages",
+    },
+    {
+      __path__ = "/var/log/auth.log",
+      job      = "sys_auth",
+    },
+    {
+      __path__ = "/var/log/user.log",
+      job      = "sys_user",
+    },
+  ]
+  forward_to = [loki.write.default.receiver]
+}
+
+
+discovery.docker "linux" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// https://grafana.com/docs/agent/latest/flow/reference/components/discovery.docker/
+// https://grafana.com/docs/alloy/latest/reference/components/discovery/discovery.relabel/
+// http://192.168.10.199:12345/graph
+discovery.relabel "logs_integrations_docker" {
+    targets = []
+  
+    rule {
+        source_labels = ["__meta_docker_container_label_com_docker_compose_project_config_files"]
+        regex = "/(.*)"
+        target_label = "test_tag"
+    }
+
+    rule {
+        source_labels = ["__meta_docker_container_label_com_docker_compose_project_config_files"]
+        regex = ".*"
+        target_label = "test_tag2"
+    }
+}
+
+loki.source.docker "containers" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.docker.linux.targets
+  labels     = {"job" = "docker"}
+  relabel_rules = discovery.relabel.logs_integrations_docker.rules
+  forward_to = [loki.write.default.receiver]
+}
+
+
+
+
+
