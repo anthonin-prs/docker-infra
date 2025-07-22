@@ -5,7 +5,7 @@ livedebugging {
 // #### Metrics Configuration ####
 // ###############################
 
-prometheus.remote_write "default" {
+prometheus.remote_write "home" {
   endpoint {
     url = "{{ prometheus_url }}/api/v1/write"
   }
@@ -22,7 +22,7 @@ prometheus.exporter.unix "node_exporter" {
 
 prometheus.scrape "node_exporter" {
   targets    = prometheus.exporter.unix.node_exporter.targets
-  forward_to = [prometheus.remote_write.default.receiver]
+  forward_to = [prometheus.remote_write.home.receiver]
   scrape_interval = "60s"
   metrics_path    = "/metrics"
 }
@@ -31,7 +31,7 @@ prometheus.scrape "alloy" {
   targets = [{
     __address__ = "127.0.0.1:12345",
   }]
-  forward_to      = [prometheus.remote_write.default.receiver]
+  forward_to      = [prometheus.remote_write.home.receiver]
   scrape_interval = "60s"
   metrics_path    = "/metrics"
   job_name        = "alloy"
@@ -44,7 +44,7 @@ prometheus.exporter.cadvisor "containers" {
 
 prometheus.scrape "containers" {
   targets    = prometheus.exporter.cadvisor.containers.targets
-  forward_to = [ prometheus.remote_write.default.receiver ]
+  forward_to = [ prometheus.remote_write.home.receiver ]
   scrape_interval = "30s"
   job_name        = "cadvisor"
 }
@@ -56,7 +56,7 @@ prometheus.scrape "containers" {
 // #### Logging Configuration ####
 // ###############################
 
-loki.write "default" {
+loki.write "home" {
   endpoint {
     url = "{{ loki_url }}/loki/api/v1/push"
   }
@@ -89,7 +89,7 @@ loki.source.file "system_logs" {
       job      = "sys_user",
     },
   ]
-  forward_to = [loki.write.default.receiver]
+  forward_to = [loki.write.home.receiver]
 }
 
 
@@ -104,24 +104,43 @@ discovery.relabel "logs_integrations_docker" {
     targets = []
   
     rule {
-        source_labels = ["__meta_docker_container_label_com_docker_compose_project_config_files"]
-        regex = "/(.*)"
-        target_label = "test_tag"
+        source_labels = ["__meta_docker_container_label_org_opencontainers_image_title"]
+        regex = "(.*)"
+        target_label = "image_name"
     }
 
     rule {
-        source_labels = ["__meta_docker_container_label_com_docker_compose_project_config_files"]
-        regex = ".*"
-        target_label = "test_tag2"
+        source_labels = ["__meta_docker_container_name"]
+        regex = "/(.*)*"
+        target_label = "container_name"
     }
+
+    rule {
+      source_labels = ["__meta_docker_container_id"]
+      regex = "(.*)*"
+      target_label = "container_id"
+    }
+
+    rule {
+      source_labels = ["__meta_docker_container_label_com_docker_compose_image"]
+      regex = "(.*)*"
+      target_label = "image_id"
+    }
+
+        rule {
+      source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+      regex = "(.*)*"
+      target_label = "container_compose"
+    }
+    
 }
 
 loki.source.docker "containers" {
   host       = "unix:///var/run/docker.sock"
   targets    = discovery.docker.linux.targets
-  labels     = {"job" = "docker"}
+  labels     = {"job" = "containers"}
   relabel_rules = discovery.relabel.logs_integrations_docker.rules
-  forward_to = [loki.write.default.receiver]
+  forward_to = [loki.write.home.receiver]
 }
 
 
