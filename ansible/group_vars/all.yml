@@ -23,6 +23,7 @@ packages:
   - software-properties-common
   - python3
   - python3-pip
+  - python3-debian
   - jq
   - sudo
   - nfs-common
@@ -56,6 +57,7 @@ promtail_version: 3.3.2
 # alloy_version: 1.10.0
 loki_url: https://loki.home.ebe.ovh
 prometheus_url: https://vm.home.ebe.ovh
+monitoring_tag: "default"
 
 ##
 ## Notification

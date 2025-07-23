@@ -8,6 +8,8 @@ backups:
       - "/var/lib/docker/volumes/supervision_prometheus-data/*"
     retention_days: "10"
 
+monitoring_tag: "VPS"
+
 stack:
   - name: docmost
     file: docmost.yml

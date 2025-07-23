@@ -1,6 +1,7 @@
-livedebugging {
-  enabled = true
-}
+// livedebugging {
+//  enabled = true
+// }
+
 // ###############################
 // #### Metrics Configuration ####
 // ###############################
@@ -11,6 +12,7 @@ prometheus.remote_write "home" {
   }
   external_labels = {
     hostname = env("HOSTNAME"),
+    type = {{monitoring_tag}},
   }
 }
 
@@ -62,6 +64,7 @@ loki.write "home" {
   }
   external_labels = {
     hostname = env("HOSTNAME"),
+    type = {{monitoring_tag}},
   }
 }
 

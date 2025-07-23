@@ -1,13 +1,12 @@
-- name: Add Grafana GPG key
-  apt_key:
-    url: https://apt.grafana.com/gpg.key
-    state: present
-
-- name: Add Grafana APT repository
-  apt_repository:
-    repo: "deb https://apt.grafana.com stable main"
-    state: present
-    filename: grafana
+- name: Add repo using key from URL
+  deb822_repository:
+    name: grafana
+    types: deb
+    uris: https://apt.grafana.com
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://apt.grafana.com/gpg.key
 
 - name: Update APT cache after adding repository
   apt:
