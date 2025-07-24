@@ -13,5 +13,3 @@ monitoring_tag: "VPS"
 stack:
   - name: mail
     file: mail.yml
-  - name: supervision
-    file: supervision-Mail.yml
