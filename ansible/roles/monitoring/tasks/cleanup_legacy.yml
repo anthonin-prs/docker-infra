@@ -1,0 +1,45 @@
+---
+# Cleanup legacy monitoring services (Promtail and Node Exporter)
+
+- name: Stop and disable Promtail service
+  service:
+    name: promtail
+    state: stopped
+    enabled: false
+  ignore_errors: true
+
+- name: Stop and disable Node Exporter service
+  service:
+    name: node_exporter
+    state: stopped
+    enabled: false
+  ignore_errors: true
+
+- name: Remove Promtail systemd service file
+  file:
+    path: /etc/systemd/system/promtail.service
+    state: absent
+
+- name: Remove Node Exporter systemd service file
+  file:
+    path: /etc/systemd/system/node_exporter.service
+    state: absent
+
+- name: Remove Promtail binary
+  file:
+    path: /usr/local/bin/promtail
+    state: absent
+
+- name: Remove Node Exporter binary
+  file:
+    path: /usr/local/bin/node_exporter
+    state: absent
+
+- name: Remove Promtail configuration directory
+  file:
+    path: /etc/promtail
+    state: absent
+
+- name: Reload systemd daemon after cleanup
+  systemd:
+    daemon_reload: yes

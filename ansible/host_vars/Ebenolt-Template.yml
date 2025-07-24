@@ -7,6 +7,8 @@ backups:
       - "/var/lib/docker/volumes/backingFsBlockDev"
     retention_days: "10"
 
+monitoring_tag: "VM"
+
 stack:
   - name: docmost
     file: docmost.yml

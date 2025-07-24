@@ -9,6 +9,8 @@ backups:
       - "/var/lib/docker/volumes/stack_plex-config/_data/Library/Application Support/Plex Media Server/Media/"
     retention_days: "2"
 
+monitoring_tag: "Server"
+
 stack:
   - name: plex
     file: plex.yml

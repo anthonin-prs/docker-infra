@@ -15,6 +15,8 @@ backups:
     excluded: ""
     retention_days: "2"
 
+monitoring_tag: "Server"
+
 stack:
   - name: homebridge
     file: homebridge.yml

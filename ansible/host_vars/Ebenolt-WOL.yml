@@ -7,6 +7,8 @@ backups:
       - "/var/lib/docker/volumes/backingFsBlockDev"
     retention_days: "5"
 
+monitoring_tag: "VM"
+
 stack:
   - name: wakeonlan
     file: wakeonlan.yml

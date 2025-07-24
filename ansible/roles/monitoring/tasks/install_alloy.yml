@@ -1,0 +1,53 @@
+- name: Add repo using key from URL
+  deb822_repository:
+    name: grafana
+    types: deb
+    uris: https://apt.grafana.com
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://apt.grafana.com/gpg.key
+
+- name: Update APT cache after adding repository
+  apt:
+    update_cache: yes
+
+- name: Install Grafana Alloy via package manager
+  apt:
+    name: alloy
+    state: present
+
+- name: Create alloy configuration directory
+  ansible.builtin.file:
+    path: /etc/alloy
+    state: directory
+    mode: "0755"
+
+- name: Create alloy data directory
+  ansible.builtin.file:
+    path: /var/lib/alloy
+    state: directory
+    owner: alloy
+    group: alloy
+    mode: "0755"
+
+- name: Copy Alloy configuration
+  template:
+    src: templates/config.alloy.j2
+    dest: /etc/alloy/config.alloy
+    owner: alloy
+    group: alloy
+    mode: 0644
+
+- name: Change alloy user
+  ansible.builtin.lineinfile:
+    path: /lib/systemd/system/alloy.service
+    regexp: "^User"
+    line: "User=root"
+
+- name: Enable and restart Alloy service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: alloy.service

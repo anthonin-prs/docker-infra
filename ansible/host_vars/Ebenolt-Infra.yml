@@ -5,6 +5,8 @@ backups:
     excluded: []
     retention_days: "5"
 
+monitoring_tag: "VM"
+
 gh_runners:
   - name: docker-infra
     url: https://github.com/anthonin-prs/docker-infra

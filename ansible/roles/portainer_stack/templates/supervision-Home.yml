@@ -86,24 +86,24 @@ services:
           cpus: '0.2'
           memory: 150M
 
-  prometheus:
-    image: prom/prometheus:v2.27.0
-    container_name: prometheus
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - prometheus-data:/prometheus
-      - prometheus-config:/etc/prometheus/
-    command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 800M
-        reservations:
-          cpus: '0.2'
-          memory: 150M
+  # prometheus:
+  #   image: prom/prometheus:v2.27.0
+  #   container_name: prometheus
+  #   restart: always
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - prometheus-data:/prometheus
+  #     - prometheus-config:/etc/prometheus/
+  #   command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1'
+  #         memory: 800M
+  #       reservations:
+  #         cpus: '0.2'
+  #         memory: 150M
 
   blackbox_exporter:
     image: quay.io/prometheus/blackbox-exporter:latest
@@ -111,26 +111,6 @@ services:
     restart: always
     #    ports:
     #      - "9115:9115"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: 150M
-        reservations:
-          cpus: '0.1'
-          memory: 20M
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    restart: always
-    # ports:
-    # - 8091:8080
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
     deploy:
       resources:
         limits:
