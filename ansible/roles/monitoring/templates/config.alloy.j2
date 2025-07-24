@@ -1,6 +1,6 @@
-// livedebugging {
+//livedebugging {
 //  enabled = true
-// }
+//}
 
 // ###############################
 // #### Metrics Configuration ####
@@ -10,9 +10,10 @@ prometheus.remote_write "home" {
   endpoint {
     url = "{{ prometheus_url }}/api/v1/write"
   }
+
   external_labels = {
     hostname = env("HOSTNAME"),
-    type = {{monitoring_tag}},
+    type = "{{monitoring_tag}}",
   }
 }
 
@@ -24,9 +25,22 @@ prometheus.exporter.unix "node_exporter" {
 
 prometheus.scrape "node_exporter" {
   targets    = prometheus.exporter.unix.node_exporter.targets
-  forward_to = [prometheus.remote_write.home.receiver]
+  forward_to = [prometheus.relabel.rewrite_job.receiver]
   scrape_interval = "60s"
   metrics_path    = "/metrics"
+}
+
+prometheus.relabel "rewrite_job" {
+
+  forward_to = [prometheus.remote_write.home.receiver]
+
+  rule {
+    source_labels = ["job"]
+    regex         = ".*"
+    replacement   = "linux_monitor"
+    target_label  = "job"
+    action        = "replace"
+  }
 }
 
 prometheus.scrape "alloy" {
@@ -39,6 +53,8 @@ prometheus.scrape "alloy" {
   job_name        = "alloy"
 }
 
+
+{% if ansible_hostname in groups['Portainer'] %}
 prometheus.exporter.cadvisor "containers" {
   docker_host = "unix:///var/run/docker.sock"
   storage_duration = "5m"
@@ -50,6 +66,9 @@ prometheus.scrape "containers" {
   scrape_interval = "30s"
   job_name        = "cadvisor"
 }
+{% endif %}
+
+
 
 
 
@@ -64,7 +83,7 @@ loki.write "home" {
   }
   external_labels = {
     hostname = env("HOSTNAME"),
-    type = {{monitoring_tag}},
+    type = "{{monitoring_tag}}",
   }
 }
 
@@ -95,14 +114,12 @@ loki.source.file "system_logs" {
   forward_to = [loki.write.home.receiver]
 }
 
-
+{% if ansible_hostname in groups['Portainer'] %}
 discovery.docker "linux" {
   host = "unix:///var/run/docker.sock"
 }
 
-// https://grafana.com/docs/agent/latest/flow/reference/components/discovery.docker/
-// https://grafana.com/docs/alloy/latest/reference/components/discovery/discovery.relabel/
-// http://192.168.10.199:12345/graph
+
 discovery.relabel "logs_integrations_docker" {
     targets = []
   
@@ -145,6 +162,8 @@ loki.source.docker "containers" {
   relabel_rules = discovery.relabel.logs_integrations_docker.rules
   forward_to = [loki.write.home.receiver]
 }
+{% endif %}
+
 
 
 
