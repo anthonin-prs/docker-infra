@@ -1,0 +1,8 @@
+backups:
+  docker_volumes:
+    name: "steam_games"
+    source_folder: "/home/steam"
+    excluded: []
+    retention_days: "5"
+
+monitoring_tag: "VM"
