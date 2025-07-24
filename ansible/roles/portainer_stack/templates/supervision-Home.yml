@@ -86,24 +86,24 @@ services:
           cpus: '0.2'
           memory: 150M
 
-  prometheus:
-    image: prom/prometheus:v2.27.0
-    container_name: prometheus
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - prometheus-data:/prometheus
-      - prometheus-config:/etc/prometheus/
-    command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 800M
-        reservations:
-          cpus: '0.2'
-          memory: 150M
+  # prometheus:
+  #   image: prom/prometheus:v2.27.0
+  #   container_name: prometheus
+  #   restart: always
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - prometheus-data:/prometheus
+  #     - prometheus-config:/etc/prometheus/
+  #   command: [ '--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=90d' ]
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1'
+  #         memory: 800M
+  #       reservations:
+  #         cpus: '0.2'
+  #         memory: 150M
 
   blackbox_exporter:
     image: quay.io/prometheus/blackbox-exporter:latest
