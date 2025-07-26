@@ -1,8 +1,8 @@
 backups:
   docker_volumes:
-    name: "steam_games"
-    source_folder: "/home/steam"
+    name: "amp"
+    source_folder: "/home/amp"
     excluded: []
-    retention_days: "5"
+    retention_days: "4"
 
 monitoring_tag: "VM"
