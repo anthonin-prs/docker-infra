@@ -71,6 +71,8 @@ services:
           memory: 100M
   renderer:
     image: grafana/grafana-image-renderer:latest
+    container_name: grafana-renderer
+    restart: always
     ports:
       - 8081
 
