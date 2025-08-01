@@ -1,1 +1,4 @@
 monitoring_tag: "VM"
+
+additional_packages:
+  - open-iscsi
