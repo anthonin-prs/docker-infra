@@ -1,0 +1,30 @@
+global_defs {
+    enable_script_security
+    router_id master_node # Router name
+}
+
+vrrp_script check_apiserver {
+  script "/etc/keepalived/scripts/check_apiserver.sh"
+  interval {{ keepalived_healthcheck_interval }} #3
+  timeout {{ keepalived_healthcheck_timeout }} #10
+  fall {{ keepalived_healthcheck_fall }} #2
+  rise {{ keepalived_healthcheck_rise }} #1
+}
+
+vrrp_instance VI_1 {
+    state {{ keepalived_state | default('BACKUP') }}
+    interface {{ keepalived_interface | default('ens33') }}
+    virtual_router_id {{ keepalived_vrid | default('51') }}
+    priority {{ keepalived_priority }}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_auth_pass | default('k8s_vip_auth') }}
+    }
+    virtual_ipaddress {
+        {{ k8s_vip | default('192.168.10.235/24') }}
+    }
+    track_script {
+        check_apiserver
+    }
+}

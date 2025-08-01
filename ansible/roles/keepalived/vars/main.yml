@@ -1,0 +1,9 @@
+---
+# Default configuration values
+keepalived_state: BACKUP
+
+# Health check configuration
+keepalived_healthcheck_interval: 5
+keepalived_healthcheck_timeout: 5
+keepalived_healthcheck_fall: 2
+keepalived_healthcheck_rise: 1

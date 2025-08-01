@@ -33,3 +33,8 @@
         name: runner
       when: inventory_hostname in groups["Runners"]
       tags: runner
+
+    - ansible.builtin.import_role:
+        name: keepalived
+      when: inventory_hostname in groups["k8s"]
+      tags: keepalived

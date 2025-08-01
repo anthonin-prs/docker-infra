@@ -1,0 +1,57 @@
+---
+- name: Create keepalived_script group
+  group:
+    name: keepalived_script
+    system: true
+
+- name: Create keepalived_script user
+  user:
+    name: keepalived_script
+    system: true
+    shell: /sbin/nologin
+    group: keepalived_script
+    create_home: false
+
+- name: Install keepalived
+  package:
+    name: keepalived
+    state: present
+
+- name: Ensure keepalived configuration directory exists
+  file:
+    path: /etc/keepalived
+    state: directory
+    mode: '0755'
+
+- name: Deploy keepalived configuration
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    mode: '0644'
+    backup: yes
+  notify: restart keepalived
+
+- name: Ensure keepalived health_checks directory exists
+  file:
+    path: /etc/keepalived/scripts
+    state: directory
+    mode: '0755'
+    owner: keepalived_script
+    group: keepalived_script
+
+- name: Deploy health check script
+  template:
+    src: check_apiserver.sh.j2
+    dest: /etc/keepalived/scripts/check_apiserver.sh
+    mode: '0755'
+    owner: keepalived_script
+    group: keepalived_script
+  notify: restart keepalived
+
+- name: Configure keepalived service
+  systemd:
+    name: keepalived
+    enabled: true
+    state: started
+    daemon_reload: true
+
