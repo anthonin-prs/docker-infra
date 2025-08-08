@@ -1,0 +1,244 @@
+#d2 --watch memory-bank/schema.d2 memory-bank/schema.svg
+vars: {
+    colors: {
+        1: "#0496FF"
+        2: "#006BE6"
+        3: "#FFBC42"
+        4: "#D81159"
+        5: "#8F2D56"
+        gray: "#555555"
+    }
+}
+
+classes: {
+    server_group{
+        style{
+            # fill: transparent
+            opacity: 0.9
+            stroke-dash: 1
+            stroke: ${colors.3}
+        }
+    }
+    server: {
+        style: {
+            border-radius: 3
+            fill: ${colors.3}
+            stroke: ${colors.5}
+            opacity: 0.8
+        }
+    }
+    icon:{
+        style: {
+            shadow: true
+        }
+        label: ""
+        shape: image
+    }
+}
+
+Infra: {
+    Cloud:{
+        Ebenolt-VPS{
+                portainer{
+                    class: icon
+                    icon: pics/portainer.png
+                }
+                npm{
+                    class: icon
+                    icon: pics/npm.png
+                }
+                wireguard {
+                    class: icon
+                    icon: pics/wireguard.png
+                }
+                docmost {
+                    class: icon
+                    icon: pics/docmost.png
+                }
+                homepage {
+                    class: icon
+                    icon: pics/homepage.png
+                }
+                infisical {
+                    class: icon
+                    icon: pics/infisical.png
+                }
+                postgresql {
+                    class: icon
+                    icon: pics/postgresql.png
+                }
+                ntfy {
+                    class: icon
+                    icon: pics/ntfy.png
+                }
+                rallly {
+                    class: icon
+                    icon: pics/rallly.png
+                }
+                tandoor {
+                    class: icon
+                    icon: pics/tandoor.png
+                }
+                umami {
+                    class: icon
+                    icon: pics/umami.png
+                }
+                uptime_kuma {
+                    class: icon
+                    icon: pics/uptime_kuma.png
+                }
+                vaultwarden {
+                    class: icon
+                    icon: pics/vaultwarden.png
+                }
+                
+        }
+        Ebenolt-Mail{
+            poste{
+                class: icon
+                icon: pics/poste.png
+            }
+        }
+    }
+
+    OnPrem: {
+        proxmox01{
+            Ebenolt-HomeAssistant{
+                HA{
+                    class: icon
+                    icon: pics/homeassistant.png
+                }
+            }
+            Ebenolt-Infra{
+                gh_runner{
+                    class: icon
+                    icon: pics/runner.png
+                }
+            }
+            Ebenolt-WOL{
+                upsnap{
+                    class: icon
+                    icon: pics/upsnap.png
+                }
+            }
+            k8s-node-1{
+                k8s_node{
+                    class: icon
+                    icon: pics/k8s.png
+                }
+            }
+            k8s-node-2{
+                k8s_node{
+                    class: icon
+                    icon: pics/k8s.png
+                }
+            }
+            k8s-node-3{
+                k8s_node{
+                    class: icon
+                    icon: pics/k8s.png
+                }
+            }
+            Ebenolt-Gameserver{
+                amp{
+                    class: icon
+                    icon: pics/amp.png
+                }
+            }
+        }
+        Ebenolt-Plex{
+                plex{
+                    class: icon
+                    icon: pics/plex.png
+                }
+                sonarr{
+                    class: icon
+                    icon: pics/sonarr.png
+                }
+                radarr{
+                    class: icon
+                    icon: pics/radarr.png
+                }
+                prowlarr{
+                    class: icon
+                    icon: pics/prowlarr.png
+                }
+                gluetun{
+                    class: icon
+                    icon: pics/gluetun.png
+                }
+                qbittorrent{
+                    class: icon
+                    icon: pics/qbittorrent.png
+                }
+                tautulli{
+                    class: icon
+                    icon: pics/tautulli.png
+                }
+                overseerr{
+                    class: icon
+                    icon: pics/overseerr.png
+                }
+            }
+        Ebenolt-Gateway{
+                portainer{
+                    class: icon
+                    icon: pics/portainer.png
+                }
+                npm{
+                    class: icon
+                    icon: pics/npm.png
+                }
+                grafana{
+                    class: icon
+                    icon: pics/grafana.png
+                }
+                loki{
+                    class: icon
+                    icon: pics/loki.png
+                }
+                victoriametrics{
+                    class: icon
+                    icon: pics/victoriametrics.png
+                }
+                alloy{
+                    class: icon
+                    icon: pics/alloy.png
+                }
+                homebridge{
+                    class: icon
+                    icon: pics/homebridge.png
+                }
+                firefox{
+                    class: icon
+                    icon: pics/firefox.png
+                }
+            }
+    }
+}
+
+Infra.OnPrem <-> Infra.Cloud.Ebenolt-VPS: Wireguard {
+                    class: icon
+                    icon: pics/wireguard.png
+                }
+
+Infra.*{ class: server_group }
+Infra.Cloud.* { class : server }
+Infra.OnPrem.* { class : server }
+Infra.OnPrem.proxmox01.* { class : server }
+
+Infra{
+    style{
+        fill: transparent
+        stroke-dash: 5
+        stroke: ${colors.2}
+    }
+}
+
+Infra.OnPrem.proxmox01{
+    style{
+        fill: transparent
+        stroke-dash: 8
+        stroke: ${colors.5}
+    }
+}

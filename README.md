@@ -6,6 +6,9 @@
 
 The repository leverages Ansible playbooks and roles to ensure consistent and repeatable infrastructure deployment and management. It also integrates with GitHub Actions for continuous integration and automated infrastructure updates.
 
+## Schema
+![Infrastructure schema](./memory-bank/schema.svg)
+
 ## Prerequisites
 
 - Ansible (tested with Ansible 2.9+)
