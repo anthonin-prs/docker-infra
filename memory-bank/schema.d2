@@ -1,4 +1,13 @@
 #d2 --watch memory-bank/schema.d2 memory-bank/schema.svg
+# Todo:
+# Web link
+# Storage link (?)
+# Legend
+
+
+grid-rows: 2
+grid-columns: 1
+
 vars: {
     colors: {
         1: "#0496FF"
@@ -11,6 +20,14 @@ vars: {
 }
 
 classes: {
+    invisible_group{
+        style{
+            fill: transparent
+            opacity: 0
+            stroke: transparent
+        }
+        label: ""
+    }
     server_group{
         style{
             # fill: transparent
@@ -34,119 +51,170 @@ classes: {
         label: ""
         shape: image
     }
-}
-
-Infra: {
-    Cloud:{
-        Ebenolt-VPS{
-                portainer{
-                    class: icon
-                    icon: pics/portainer.png
-                }
-                npm{
-                    class: icon
-                    icon: pics/npm.png
-                }
-                wireguard {
-                    class: icon
-                    icon: pics/wireguard.png
-                }
-                docmost {
-                    class: icon
-                    icon: pics/docmost.png
-                }
-                homepage {
-                    class: icon
-                    icon: pics/homepage.png
-                }
-                infisical {
-                    class: icon
-                    icon: pics/infisical.png
-                }
-                postgresql {
-                    class: icon
-                    icon: pics/postgresql.png
-                }
-                ntfy {
-                    class: icon
-                    icon: pics/ntfy.png
-                }
-                rallly {
-                    class: icon
-                    icon: pics/rallly.png
-                }
-                tandoor {
-                    class: icon
-                    icon: pics/tandoor.png
-                }
-                umami {
-                    class: icon
-                    icon: pics/umami.png
-                }
-                uptime_kuma {
-                    class: icon
-                    icon: pics/uptime_kuma.png
-                }
-                vaultwarden {
-                    class: icon
-                    icon: pics/vaultwarden.png
-                }
-                
+    net_link: {
+        style:{
+            stroke: ${colors.5}
+            stroke-dash: 10
         }
+    }
+    web_link:{
+        style:{
+            fill: ${colors.2}
+            stroke: ${colors.5}
+        }
+    }
+}
+Internet:{
+    shape: cloud
+}
+Infra: {
+    style{
+        fill: transparent
+        stroke-dash: 5
+        stroke: ${colors.2}
+    }
+    grid-columns: 2
+    Cloud:{
         Ebenolt-Mail{
+            tooltip: Pulseheberg VPS\n4vCPU + 4Go RAM + 40Go NVMe
             poste{
                 class: icon
                 icon: pics/poste.png
             }
         }
+        Ebenolt-VPS{
+            tooltip: Pulseheberg VPS\n8vCPU + 8Go RAM + 50Go NVMe
+            portainer{
+                class: icon
+                icon: pics/portainer.png
+            }
+            npm{
+                class: icon
+                icon: pics/npm.png
+            }
+            wireguard {
+                class: icon
+                icon: pics/wireguard.png
+            }
+            docmost {
+                class: icon
+                icon: pics/docmost.png
+            }
+            homepage {
+                class: icon
+                icon: pics/homepage.png
+            }
+            infisical {
+                class: icon
+                icon: pics/infisical.png
+            }
+            postgresql {
+                class: icon
+                icon: pics/postgresql.png
+            }
+            ntfy {
+                class: icon
+                icon: pics/ntfy.png
+            }
+            rallly {
+                class: icon
+                icon: pics/rallly.png
+            }
+            tandoor {
+                class: icon
+                icon: pics/tandoor.png
+            }
+            umami {
+                class: icon
+                icon: pics/umami.png
+            }
+            uptime_kuma {
+                class: icon
+                icon: pics/uptime_kuma.png
+            }
+            vaultwarden {
+                class: icon
+                icon: pics/vaultwarden.png
+            }      
+        }
     }
 
     OnPrem: {
-        proxmox01{
-            Ebenolt-HomeAssistant{
-                HA{
-                    class: icon
-                    icon: pics/homeassistant.png
-                }
+        infra{
+            class: invisible_group
+            grid-columns: 1
+            grid-rows: 2
+            Unifi Dream Machine Pro{
+                class: icon
+                icon: pics/udm.png
+                width: 400
+                height: 150
+                tooltip: Unifi Dream Machine Pro
             }
-            Ebenolt-Infra{
-                gh_runner{
-                    class: icon
-                    icon: pics/runner.png
-                }
-            }
-            Ebenolt-WOL{
-                upsnap{
-                    class: icon
-                    icon: pics/upsnap.png
-                }
-            }
-            k8s-node-1{
-                k8s_node{
-                    class: icon
-                    icon: pics/k8s.png
-                }
-            }
-            k8s-node-2{
-                k8s_node{
-                    class: icon
-                    icon: pics/k8s.png
-                }
-            }
-            k8s-node-3{
-                k8s_node{
-                    class: icon
-                    icon: pics/k8s.png
-                }
-            }
-            Ebenolt-Gameserver{
-                amp{
-                    class: icon
-                    icon: pics/amp.png
-                }
+            NAS{
+                class: icon
+                icon: pics/qnap.png
+                width: 400
+                height: 150
+                tooltip: QNAP TS X435XeU\n4x4To
             }
         }
-        Ebenolt-Plex{
+        servers{
+            class: invisible_group
+            grid-columns: 1
+            grid-rows: 3
+            proxmox01{
+                tooltip: GMKTek M5 Plus\nR7 5825U + 32 Go DDR4 + 1,5 To NVMe
+                style{
+                    fill: transparent
+                    stroke-dash: 8
+                    stroke: ${colors.5}
+                }
+                Ebenolt-HomeAssistant{
+                    HA{
+                        class: icon
+                        icon: pics/homeassistant.png
+                    }
+                }
+                Ebenolt-Infra{
+                    gh_runner{
+                        class: icon
+                        icon: pics/runner.png
+                    }
+                }
+                Ebenolt-WOL{
+                    upsnap{
+                        class: icon
+                        icon: pics/upsnap.png
+                    }
+                }
+                k8s-node-1{
+                    k8s_node{
+                        class: icon
+                        icon: pics/k8s.png
+                    }
+                }
+                k8s-node-2{
+                    k8s_node{
+                        class: icon
+                        icon: pics/k8s.png
+                    }
+                }
+                k8s-node-3{
+                    k8s_node{
+                        class: icon
+                        icon: pics/k8s.png
+                    }
+                }
+                Ebenolt-Gameserver{
+                    amp{
+                        class: icon
+                        icon: pics/amp.png
+                    }
+                }
+            }
+            Ebenolt-Plex{
+                tooltip: GMKtek G3\nIntel N100 + 8Go DDR4 + 250Go NVMe
                 plex{
                     class: icon
                     icon: pics/plex.png
@@ -180,7 +248,8 @@ Infra: {
                     icon: pics/overseerr.png
                 }
             }
-        Ebenolt-Gateway{
+            Ebenolt-Gateway{
+                tooltip: Celeron N4100 + 8Go DDR4 + 128Go SD
                 portainer{
                     class: icon
                     icon: pics/portainer.png
@@ -214,31 +283,29 @@ Infra: {
                     icon: pics/firefox.png
                 }
             }
+        }
     }
 }
 
-Infra.OnPrem <-> Infra.Cloud.Ebenolt-VPS: Wireguard {
-                    class: icon
+# Internal Network
+Infra.OnPrem.infra.Unifi Dream Machine Pro <-> Infra.Cloud.Ebenolt-VPS: Wireguard {
+                    label: ""
+                    shape: image
                     icon: pics/wireguard.png
+                    class: net_link
                 }
+Infra.OnPrem.infra.Unifi Dream Machine Pro -> Infra.OnPrem.servers.Ebenolt-Plex {class: net_link}
+Infra.OnPrem.infra.Unifi Dream Machine Pro -> Infra.OnPrem.servers.Ebenolt-Gateway {class: net_link}
+Infra.OnPrem.infra.Unifi Dream Machine Pro -> Infra.OnPrem.servers.proxmox01 {class: net_link}
+Infra.OnPrem.infra.Unifi Dream Machine Pro -> Infra.OnPrem.infra.NAS {class: net_link}
 
+# Internet Network
+Internet -> Infra.OnPrem.infra.Unifi Dream Machine Pro { label: 82.65.131.158\n10Gbps; class: net_link }
+Internet -> Infra.Cloud.Ebenolt-Mail { label: 185.216.27.202\n250Mbps; class: net_link }
+Internet -> Infra.Cloud.Ebenolt-VPS { label: 185.216.27.61\n500Mbps; class: net_link}
+
+# Styling
 Infra.*{ class: server_group }
 Infra.Cloud.* { class : server }
-Infra.OnPrem.* { class : server }
-Infra.OnPrem.proxmox01.* { class : server }
-
-Infra{
-    style{
-        fill: transparent
-        stroke-dash: 5
-        stroke: ${colors.2}
-    }
-}
-
-Infra.OnPrem.proxmox01{
-    style{
-        fill: transparent
-        stroke-dash: 8
-        stroke: ${colors.5}
-    }
-}
+Infra.OnPrem.servers.* { class : server }
+Infra.OnPrem.servers.proxmox01.* { class : server }
