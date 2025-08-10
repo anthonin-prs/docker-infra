@@ -4,8 +4,7 @@
 # Storage link (?)
 # Legend
 
-
-grid-rows: 2
+grid-rows: 3
 grid-columns: 1
 
 vars: {
@@ -37,6 +36,7 @@ classes: {
         }
     }
     server: {
+        grid-columns: 3
         style: {
             border-radius: 3
             fill: ${colors.3}
@@ -75,6 +75,8 @@ Infra: {
     }
     grid-columns: 2
     Cloud:{
+        grid-rows: 2 
+        grid-columns: 2
         Ebenolt-Mail{
             tooltip: Pulseheberg VPS\n4vCPU + 4Go RAM + 40Go NVMe
             poste{
@@ -140,10 +142,16 @@ Infra: {
     }
 
     OnPrem: {
+        grid-columns: 1
+        grid-rows: 2
         infra{
             class: invisible_group
-            grid-columns: 1
-            grid-rows: 2
+            grid-columns: 3
+            grid-rows: 1
+            empty {
+                class: invisible_group
+                width: 800
+            }
             Unifi Dream Machine Pro{
                 class: icon
                 icon: pics/udm.png
@@ -161,8 +169,43 @@ Infra: {
         }
         servers{
             class: invisible_group
-            grid-columns: 1
-            grid-rows: 3
+            grid-columns: 3
+            grid-rows: 1
+            Ebenolt-Gateway{
+                tooltip: Celeron N4100 + 8Go DDR4 + 128Go SD
+                portainer{
+                    class: icon
+                    icon: pics/portainer.png
+                }
+                npm{
+                    class: icon
+                    icon: pics/npm.png
+                }
+                grafana{
+                    class: icon
+                    icon: pics/grafana.png
+                }
+                loki{
+                    class: icon
+                    icon: pics/loki.png
+                }
+                victoriametrics{
+                    class: icon
+                    icon: pics/victoriametrics.png
+                }
+                alloy{
+                    class: icon
+                    icon: pics/alloy.png
+                }
+                homebridge{
+                    class: icon
+                    icon: pics/homebridge.png
+                }
+                firefox{
+                    class: icon
+                    icon: pics/firefox.png
+                }
+            }
             proxmox01{
                 tooltip: GMKTek M5 Plus\nR7 5825U + 32 Go DDR4 + 1,5 To NVMe
                 style{
@@ -248,41 +291,6 @@ Infra: {
                     icon: pics/overseerr.png
                 }
             }
-            Ebenolt-Gateway{
-                tooltip: Celeron N4100 + 8Go DDR4 + 128Go SD
-                portainer{
-                    class: icon
-                    icon: pics/portainer.png
-                }
-                npm{
-                    class: icon
-                    icon: pics/npm.png
-                }
-                grafana{
-                    class: icon
-                    icon: pics/grafana.png
-                }
-                loki{
-                    class: icon
-                    icon: pics/loki.png
-                }
-                victoriametrics{
-                    class: icon
-                    icon: pics/victoriametrics.png
-                }
-                alloy{
-                    class: icon
-                    icon: pics/alloy.png
-                }
-                homebridge{
-                    class: icon
-                    icon: pics/homebridge.png
-                }
-                firefox{
-                    class: icon
-                    icon: pics/firefox.png
-                }
-            }
         }
     }
 }
@@ -308,4 +316,5 @@ Internet -> Infra.Cloud.Ebenolt-VPS { label: 185.216.27.61\n500Mbps; class: net_
 Infra.*{ class: server_group }
 Infra.Cloud.* { class : server }
 Infra.OnPrem.servers.* { class : server }
-Infra.OnPrem.servers.proxmox01.* { class : server }
+Infra.OnPrem.servers.proxmox01.* { class : server}
+Infra.OnPrem.servers.proxmox01 { grid-rows: 1; grid-columns: 4}
