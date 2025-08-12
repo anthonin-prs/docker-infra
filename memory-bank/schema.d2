@@ -78,14 +78,14 @@ Infra: {
         grid-rows: 2 
         grid-columns: 2
         Ebenolt-Mail{
-            tooltip: Pulseheberg VPS\n4vCPU + 4Go RAM + 40Go NVMe
+            tooltip: OVH VPS\n4vCPU + 8Go RAM + 75GGo NVMe
             poste{
                 class: icon
                 icon: pics/poste.png
             }
         }
         Ebenolt-VPS{
-            tooltip: Pulseheberg VPS\n8vCPU + 8Go RAM + 50Go NVMe
+            tooltip: OVH VPS\n6vCPU + 12Go RAM + 100Go NVMe
             portainer{
                 class: icon
                 icon: pics/portainer.png
@@ -309,8 +309,8 @@ Infra.OnPrem.infra.Unifi Dream Machine Pro -> Infra.OnPrem.infra.NAS {class: net
 
 # Internet Network
 Internet -> Infra.OnPrem.infra.Unifi Dream Machine Pro { label: 82.65.131.158\n10Gbps; class: net_link }
-Internet -> Infra.Cloud.Ebenolt-Mail { label: 185.216.27.202\n250Mbps; class: net_link }
-Internet -> Infra.Cloud.Ebenolt-VPS { label: 185.216.27.61\n500Mbps; class: net_link}
+Internet -> Infra.Cloud.Ebenolt-Mail { label: 51.75.23.90\n400Mbps; class: net_link }
+Internet -> Infra.Cloud.Ebenolt-VPS { label: 51.38.232.207\n1Gbps; class: net_link}
 
 # Styling
 Infra.*{ class: server_group }
