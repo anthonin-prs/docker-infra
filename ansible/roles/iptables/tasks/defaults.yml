@@ -12,6 +12,7 @@
     chain: "{{ item }}"
     protocol: icmp
     jump: ACCEPT
+    comment: "Allow ping"
   with_items:
     - INPUT
     - OUTPUT
@@ -22,6 +23,7 @@
     protocol: "{{ item }}"
     jump: ACCEPT
     source_port: 53
+    comment: "Allow DNS"
   with_items:
     - tcp
     - udp
@@ -31,3 +33,31 @@
     chain: INPUT
     ctstate: INVALID
     jump: ACCEPT
+
+- name: Allow all from home
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    jump: ACCEPT
+    source: "{{home_ip}}"
+    comment: "Allow from home"
+
+- name: Allow all from local
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    jump: ACCEPT
+    source: "172.0.0.0/8"
+    # interface: docker0
+    comment: "Allow Docker network for NPM"
+
+- name: Allow SSH
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: TCP
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: 22
+    jump: ACCEPT
+    source: "0.0.0.0/0"
+    comment: "Allow SSH"

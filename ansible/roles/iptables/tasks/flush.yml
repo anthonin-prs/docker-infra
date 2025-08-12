@@ -1,9 +1,3 @@
-- name: Iptables flush filter
+- name: Iptables flush chain
   ansible.builtin.iptables:
-    chain: "{{ item }}"
     flush: yes
-  with_items:
-    - INPUT
-    - FORWARD
-    - OUTPUT
-  become: yes

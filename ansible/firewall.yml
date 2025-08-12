@@ -1,0 +1,6 @@
+- name: Installation et configuration de l'infra
+  hosts: infra
+  tasks:
+    - ansible.builtin.import_role:
+        name: iptables
+      when: firewall_custom_rules is defined

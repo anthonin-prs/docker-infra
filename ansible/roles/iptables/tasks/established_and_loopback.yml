@@ -12,11 +12,11 @@
     protocol: TCP
     jump: ACCEPT
 
-# - name: Allow Loopback IN
-#   ansible.builtin.iptables:
-#     chain: INPUT
-#     in_interface: lo
-#     jump: ACCEPT
+- name: Allow Loopback IN
+  ansible.builtin.iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
 
 - name: Allow Loopback OUT
   ansible.builtin.iptables:

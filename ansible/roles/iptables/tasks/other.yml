@@ -1,4 +1,0 @@
-- name: Block other
-  ansible.builtin.iptables:
-    chain: INPUT
-    jump: DROP

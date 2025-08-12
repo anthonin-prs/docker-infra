@@ -1,19 +1,31 @@
 ---
 # tasks file for iptables
+
 - name: Flush iptables
   ansible.builtin.include_tasks: flush.yml
 
 - name: Defaults
   ansible.builtin.include_tasks: defaults.yml
 
-- name: Applicatives needs
-  ansible.builtin.include_tasks: applicatives_needs.yml
-
 - name: Established and loopback
   ansible.builtin.include_tasks: established_and_loopback.yml
 
+- name: Custom rules
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: "{{ rule.protocol }}"
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    destination_port: "{{ rule.d_port }}"
+    jump: "{{ rule.action }}"
+    comment: "{{ rule.comment }}"
+  with_items: "{{ firewall_custom_rules }}"
+  loop_control:
+    loop_var: rule
+
 - name: Block other
-  ansible.builtin.include_tasks: other.yml
+  ansible.builtin.iptables:
+    chain: INPUT
+    jump: DROP
 
 - name: Save and print
   ansible.builtin.include_tasks: save_and_print.yml

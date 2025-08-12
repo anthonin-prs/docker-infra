@@ -11,3 +11,41 @@ backups:
 stack:
   - name: mail
     file: mail.yml
+
+firewall_custom_rules:
+  - comment: Web HTTP
+    protocol: TCP
+    d_port: 80
+    action: ACCEPT
+  - comment: Web HTTPS
+    protocol: TCP
+    d_port: 443
+    action: ACCEPT
+  - comment: Mails SMTP
+    protocol: TCP
+    d_port: 25
+    action: ACCEPT
+  - comment: Mails POP3
+    protocol: TCP
+    d_port: 110
+    action: ACCEPT
+  - comment: Mails IMAP
+    protocol: TCP
+    d_port: 143
+    action: ACCEPT
+  - comment: Mails SMTPS
+    protocol: TCP
+    d_port: 465
+    action: ACCEPT
+  - comment: Mails MSA
+    protocol: TCP
+    d_port: 587
+    action: ACCEPT
+  - comment: Mails IMAPS
+    protocol: TCP
+    d_port: 993
+    action: ACCEPT
+  - comment: Mails POP3S
+    protocol: TCP
+    d_port: 995
+    action: ACCEPT

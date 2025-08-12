@@ -11,10 +11,6 @@
         name: monitoring
       tags: monitoring
 
-    # - ansible.builtin.import_role:
-    #     name: iptables
-    #   tags: firewall
-
     - ansible.builtin.import_role:
         name: user_conf
       tags: user_conf
