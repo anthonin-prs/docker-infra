@@ -7,7 +7,6 @@ backups:
       - "/var/lib/docker/volumes/backingFsBlockDev"
       - "/var/lib/docker/volumes/supervision_prometheus-data/*"
     retention_days: "10"
-
 stack:
   - name: docmost
     file: docmost.yml

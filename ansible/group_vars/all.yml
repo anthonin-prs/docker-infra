@@ -6,6 +6,7 @@ ansible_python_interpreter: auto_silent
 
 packages:
   - htop
+  - cron
   - screen
   - neofetch
   - gcc
@@ -31,7 +32,6 @@ packages:
   - rsync
   - wget
   - syslog-ng
-  - awscli
   - s3cmd
   - gnupg2
 
@@ -39,6 +39,7 @@ additional_packages: []
 
 pip_packages:
   - requests
+  - awscli==1.32.107
 pip_additional_packages: []
 
 home_ip: !vault |

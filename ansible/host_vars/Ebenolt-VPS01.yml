@@ -1,0 +1,33 @@
+backups:
+  docker_volumes:
+    name: "docker_volumes"
+    source_folder: "/var/lib/docker/volumes"
+    excluded:
+      - "/var/lib/docker/volumes/metadata.db"
+      - "/var/lib/docker/volumes/backingFsBlockDev"
+      - "/var/lib/docker/volumes/supervision_prometheus-data/*"
+    retention_days: "10"
+
+stack:
+  - name: docmost
+    file: docmost.yml
+    env: docmost.env
+  - name: infisical
+    file: infisical.yml
+    env: infisical.env
+  - name: supervision
+    file: supervision-VPS.yml
+  - name: tandoor
+    file: tandoor.yml
+    env: tandoor.env
+  - name: vaultwarden
+    file: vaultwarden.yml
+    env: vaultwarden.env
+  - name: web
+    file: web-VPS.yml
+    env: web-VPS.env
+  - name: wireguard
+    file: wireguard.yml
+  - name: rallly
+    file: rallly.yml
+    env: rallly.env
