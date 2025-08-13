@@ -30,3 +30,6 @@ stack:
   - name: rallly
     file: rallly.yml
     env: rallly.env
+  # - name: minio
+  #   file: minio.yml
+  #   env: minio.env

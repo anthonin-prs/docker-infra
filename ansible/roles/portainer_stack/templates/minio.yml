@@ -1,0 +1,13 @@
+volumes:
+    minio_data:
+
+services:
+  minio:
+    image: docker.io/bitnami/minio:2022
+    ports:
+      - '9100:9000'
+      - '9001:9001'
+    volumes:
+      - minio_data:/data
+    env_file:
+      - stack.env
