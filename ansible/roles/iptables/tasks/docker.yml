@@ -1,0 +1,34 @@
+- name: Allow Established and Related
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+    comment: "Allow established and related"
+
+- name: Whitelisted
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    source: "{{item}}"
+    jump: ACCEPT
+    comment: "Allow Home IP"
+  with_items:
+    - "{{home_ip}}"
+  no_log: true
+
+- name: Custom rules
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    protocol: "{{ rule.protocol }}"
+    destination_port: "{{ rule.d_port }}"
+    jump: "{{ rule.action }}"
+    comment: "{{ rule.comment }}"
+  with_items: "{{ firewall_custom_rules }}"
+  loop_control:
+    loop_var: rule
+
+- name: DROP anything else
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    source: "0.0.0.0/0"
+    jump: DROP
+    comment: "Block all"

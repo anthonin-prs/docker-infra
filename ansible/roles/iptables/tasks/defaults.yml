@@ -34,13 +34,16 @@
     ctstate: INVALID
     jump: ACCEPT
 
-- name: Allow all from home
+- name: Allow all from whitelisted
   ansible.builtin.iptables:
     chain: INPUT
     protocol: TCP
     jump: ACCEPT
-    source: "{{home_ip}}"
+    source: "{{item}}"
     comment: "Allow from home"
+  with_items:
+    - "{{home_ip}}"
+  no_log: true
 
 - name: Allow all from local
   ansible.builtin.iptables:

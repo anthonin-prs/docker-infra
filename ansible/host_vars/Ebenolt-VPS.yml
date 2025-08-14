@@ -33,3 +33,26 @@ stack:
   # - name: minio
   #   file: minio.yml
   #   env: minio.env
+
+firewall_custom_rules:
+  - comment: Web HTTP
+    protocol: TCP
+    d_port: 80
+    action: ACCEPT
+    in_if: docker0
+  - comment: Web HTTPS
+    protocol: TCP
+    d_port: 443
+    action: ACCEPT
+  - comment: SSH
+    protocol: TCP
+    d_port: 22
+    action: ACCEPT
+  - comment: SSH Share
+    protocol: TCP
+    d_port: 222
+    action: ACCEPT
+  - comment: Wireguard
+    protocol: UDP
+    d_port: 51820
+    action: ACCEPT

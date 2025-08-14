@@ -14,7 +14,6 @@
   ansible.builtin.iptables:
     chain: INPUT
     protocol: "{{ rule.protocol }}"
-    in_interface: "{{ ansible_default_ipv4.interface }}"
     destination_port: "{{ rule.d_port }}"
     jump: "{{ rule.action }}"
     comment: "{{ rule.comment }}"
@@ -27,10 +26,14 @@
     chain: INPUT
     jump: DROP
 
-- name: Save and print
-  ansible.builtin.include_tasks: save_and_print.yml
-
 - name: Restart docker
   service:
     name: "docker"
     state: restarted
+
+- name: Docker Firewalling
+  ansible.builtin.include_tasks: docker.yml
+
+- name: Save and print
+  ansible.builtin.include_tasks: save_and_print.yml
+
