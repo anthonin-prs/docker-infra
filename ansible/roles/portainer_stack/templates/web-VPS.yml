@@ -69,11 +69,12 @@ services:
     depends_on:
       - database
     ports:
-      - "8081:80"
+      - "8081:8000"
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
       - PMA_HOST=database
+      - APACHE_PORT=8000
     env_file:
       - stack.env
     deploy:
