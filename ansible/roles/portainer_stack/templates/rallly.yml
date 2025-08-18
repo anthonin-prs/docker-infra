@@ -1,6 +1,7 @@
 services:
   rallly_db:
     image: postgres:14.2
+    container_name: rally_db
     restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -14,6 +15,7 @@ services:
 
   rallly:
     image: lukevella/rallly:latest
+    container_name: rally
     restart: always
     depends_on:
       - rallly_db

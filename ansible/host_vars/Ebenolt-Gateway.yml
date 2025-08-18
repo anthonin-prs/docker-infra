@@ -25,5 +25,5 @@ stack:
     env: supervision-Home.env
   - name: web
     file: web-Home.yml
-  - name: n8s
+  - name: n8n
     file: n8n.yml
