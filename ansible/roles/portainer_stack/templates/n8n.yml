@@ -1,0 +1,24 @@
+volumes:
+    n8n_data:
+
+services:
+    n8n:
+        image: docker.n8n.io/n8nio/n8n
+        container_name: n8n
+        restart: always
+        ports:
+            - "5678:5678"
+        environment:
+            - SSL_EMAIL=me@ebenolt.com
+            - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+            - N8N_HOST=n8n.home.ebe.ovh
+            - N8N_PORT=5678
+            - N8N_PROTOCOL=https
+            - N8N_RUNNERS_ENABLED=true
+            - NODE_ENV=production
+            - WEBHOOK_URL=https://n8n.home.ebe.ovh/
+            - GENERIC_TIMEZONE=Europe/Paris
+            - TZ=Europe/Paris
+        volumes:
+            - n8n_data:/home/node/.n8n
+
