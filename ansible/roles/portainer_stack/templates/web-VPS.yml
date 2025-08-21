@@ -166,6 +166,7 @@ services:
     #   - "8091:8080"
     volumes:
       - dubost-terrassement-data:/var/www/html
+      - private:/var/www/private
 
   sutom:
     <<: *service_default
