@@ -19,6 +19,7 @@ volumes:
   homepage-config:
   ntfy-config:
   ntfy-cache:
+  dubost-terrassement-data:
 
 services:
   nginx:
@@ -157,6 +158,14 @@ services:
     #   - "8091:8080"
     volumes:
       - ip-ebe-data:/var/www/html
+
+  dubost-terrassement:
+    <<: *service_default
+    container_name: dubost-terrassement
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - dubost-terrassement-data:/var/www/html
 
   sutom:
     <<: *service_default
