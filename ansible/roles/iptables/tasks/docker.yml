@@ -1,3 +1,12 @@
+- name: Masquerade
+  ansible.builtin.iptables:
+    chain: POSTROUTING
+    table: nat
+    jump: MASQUERADE
+    source: 172.16.0.0/12
+    out_interface: ens3
+    comment: "Docker MASQUERADE"
+
 - name: Allow Established and Related
   ansible.builtin.iptables:
     chain: DOCKER-USER
@@ -25,6 +34,36 @@
   with_items: "{{ firewall_custom_rules }}"
   loop_control:
     loop_var: rule
+
+- name: Docker forward
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    jump: ACCEPT
+    in_interface: docker0
+    out_interface: ens3
+    comment: "Docker forward"
+
+- name: Docker forward related established
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    jump: ACCEPT
+    ctstate: ESTABLISHED,RELATED
+    in_interface: ens3
+    out_interface: docker0
+    source: 172.16.0.0/12
+    comment: "Docker forward related established"
+
+- name: Masquerade
+  ansible.builtin.iptables:
+    chain: DOCKER-USER
+    jump: ACCEPT
+    protocol: tcp
+    destination_ports:
+      - 587
+      - 465
+      - 80
+      - 443
+    comment: "Docker out"
 
 - name: DROP anything else
   ansible.builtin.iptables:
