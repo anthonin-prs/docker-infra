@@ -30,7 +30,7 @@ stack:
   - name: rallly
     file: rallly.yml
     env: rallly.env
-  - name: dubost-wb
+  - name: dubost-wp
     file: dubost-wordpress.yml
     env: dubost-wordpress.env
   # - name: minio

@@ -7,7 +7,7 @@ volumes:
 
 services:
   dubost-db:
-    image: mysql:9.4.0
+    image: mariadb:latest
     container_name: dubost-db
     restart: always
     env_file:
