@@ -18,7 +18,7 @@ services:
   dubost-wp:
     depends_on:
       - dubost-db
-    image: wordpress:latest
+    image: wordpress:6.8.2-php8.3-apache
     container_name: dubost-wp
     restart: always
     ports:
