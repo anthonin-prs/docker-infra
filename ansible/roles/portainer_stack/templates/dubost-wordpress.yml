@@ -1,0 +1,35 @@
+version: '3'
+
+
+volumes:
+  dubost-wp-data:
+  dubost-db:
+
+services:
+  dubost-db:
+    image: mysql:9.4.0
+    container_name: dubost-db
+    restart: unless-stopped
+    env_file:
+      stack.env
+    volumes:
+      - dubost-db:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+
+  dubost-wp:
+    depends_on:
+      - db
+    image: wordpress:6.8.2-fpm-alpine
+    container_name: dubost-wp
+    restart: always
+    ports:
+      - "8085:80"
+    env_file:
+      - stack.env
+    environment:
+      - WORDPRESS_DB_HOST=dubost-db:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=$MYSQL_DATABASE
+    volumes:
+      - dubost-wp-data:/var/www/html
