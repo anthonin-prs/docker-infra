@@ -22,10 +22,11 @@ services:
     container_name: dubost-wp
     restart: always
     ports:
-      - "8085:80"
+      - "8085:8080"
     env_file:
       - stack.env
     environment:
       - WORDPRESS_DB_HOST=dubost-db:3306
+    command: "sed -i 's/:80>/:8080>/g' /etc/apache2/sites-enabled/000-default.conf && apache2-foreground"
     volumes:
       - dubost-wp-data:/var/www/html
