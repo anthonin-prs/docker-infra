@@ -22,7 +22,7 @@ services:
     container_name: dubost-wp
     restart: always
     ports:
-      - "8085:8080"
+      - "8085:80"
     env_file:
       - stack.env
     environment:
