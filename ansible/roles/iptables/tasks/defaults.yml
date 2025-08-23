@@ -50,7 +50,7 @@
     chain: INPUT
     protocol: TCP
     jump: ACCEPT
-    source: "172.0.0.0/8"
+    source: "172.16.0.0/12"
     # interface: docker0
     comment: "Allow Docker network for NPM"
 

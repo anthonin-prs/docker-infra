@@ -27,6 +27,7 @@
 - name: Custom rules
   ansible.builtin.iptables:
     chain: DOCKER-USER
+    # in_interface: ens3
     protocol: "{{ rule.protocol }}"
     destination_port: "{{ rule.d_port }}"
     jump: "{{ rule.action }}"
@@ -57,12 +58,14 @@
   ansible.builtin.iptables:
     chain: DOCKER-USER
     jump: ACCEPT
-    protocol: tcp
-    destination_ports:
-      - 587
-      - 465
-      - 80
-      - 443
+    # protocol: tcp
+    # protocol: icmp
+    source: 172.16.0.0/12
+    # destination_ports:
+    #   - 587
+    #   - 465
+    #   - 80
+    #   - 443
     comment: "Docker out"
 
 - name: DROP anything else
