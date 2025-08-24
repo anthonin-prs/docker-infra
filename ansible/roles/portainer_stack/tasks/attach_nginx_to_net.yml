@@ -5,14 +5,17 @@
 - name: Get container networks
   shell: "docker inspect {{container_name.stdout}} | jq -r .[0].NetworkSettings.Networks | jq -r 'keys[]'"
   register: container_nets
+  when: container_name.stdout != ""
 
 - name: Get docker networks
   shell: "docker network ls | grep 'bridge' | grep -v wireguard | awk '{print $2}'"
   register: docker_nets
+  when: container_name.stdout != ""
 
 - name: Print diff
   debug:
     msg: "{{ docker_nets.stdout_lines | difference(container_nets.stdout_lines)}}"
+  when: container_name.stdout != ""
 
 - name: Add container to all network, leaving existing containers connected
   community.docker.docker_network:
@@ -20,3 +23,4 @@
     connected: "{{ container_name.stdout }}"
     appends: true
   loop: "{{docker_nets.stdout_lines | difference(container_nets.stdout_lines)}}"
+  when: container_name.stdout != ""
