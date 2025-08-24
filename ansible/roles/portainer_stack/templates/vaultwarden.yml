@@ -11,5 +11,5 @@ services:
       - ROCKET_PORT=8000
     volumes:
       - vw-data:/data/
-    ports:
-      - 9081:8000
+    # ports:
+    #   - 9081:8000

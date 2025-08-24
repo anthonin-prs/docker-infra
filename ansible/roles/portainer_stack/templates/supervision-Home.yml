@@ -47,7 +47,7 @@ services:
           type: prometheus
           access: proxy
           isDefault: true
-          url: http://prometheus:9090
+          url: http://victoria_metrics:9090
           jsonData:
             httpMethod: POST
             manageAlerts: true
@@ -59,8 +59,8 @@ services:
         EOF
 
         /run.sh
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     deploy:
       resources:
         limits:
@@ -73,15 +73,15 @@ services:
     image: grafana/grafana-image-renderer:latest
     container_name: grafana-renderer
     restart: always
-    ports:
-      - 8081
+    # ports:
+    #   - 8081
 
   loki:
     image: grafana/loki:3.0.0
     container_name: loki
     restart: always
-    ports:
-      - "3100:3100"
+    # ports:
+    #   - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - loki-data:/loki
@@ -94,6 +94,44 @@ services:
         reservations:
           cpus: '0.2'
           memory: 150M
+
+  victoria_metrics:
+    image: victoriametrics/victoria-metrics:v1.120.0
+    restart: always
+    container_name: victoria_metrics
+    ports:
+      - 8428:8428
+      - 8089:8089
+      - 8089:8089/udp
+      - 2003:2003
+      - 2003:2003/udp
+      - 4242:4242
+    volumes:
+      - vm_data:/storage
+    command:
+      - "--storageDataPath=/storage"
+      - "--graphiteListenAddr=:2003"
+      - "--opentsdbListenAddr=:4242"
+      - "--httpListenAddr=:8428"
+      - "--influxListenAddr=:8089"
+      - "--retentionPeriod=90d"
+
+  vm_agent:
+    image: victoriametrics/vmagent:v1.120.0
+    restart: always
+    container_name: vm_agent
+    depends_on:
+      - "victoria_metrics"
+    ports:
+      - 8429:8429
+    volumes:
+      - vm_agentdata:/vmagentdata
+      - vm_config:/etc/prometheus/
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "--remoteWrite.url=http://victoria_metrics:8428/api/v1/write"
+
+
 
   # prometheus:
   #   image: prom/prometheus:v2.27.0
@@ -198,40 +236,4 @@ services:
     restart: always
     volumes:
       - pve_exporter-config:/etc/prometheus/
-
-  victoria_metrics:
-    image: victoriametrics/victoria-metrics:v1.120.0
-    restart: always
-    container_name: victoria_metrics
-    ports:
-      - 8428:8428
-      - 8089:8089
-      - 8089:8089/udp
-      - 2003:2003
-      - 2003:2003/udp
-      - 4242:4242
-    volumes:
-      - vm_data:/storage
-    command:
-      - "--storageDataPath=/storage"
-      - "--graphiteListenAddr=:2003"
-      - "--opentsdbListenAddr=:4242"
-      - "--httpListenAddr=:8428"
-      - "--influxListenAddr=:8089"
-      - "--retentionPeriod=90d"
-
-  vm_agent:
-    image: victoriametrics/vmagent:v1.120.0
-    restart: always
-    container_name: vm_agent
-    depends_on:
-      - "victoria_metrics"
-    ports:
-      - 8429:8429
-    volumes:
-      - vm_agentdata:/vmagentdata
-      - vm_config:/etc/prometheus/
-    command:
-      - "--promscrape.config=/etc/prometheus/prometheus.yml"
-      - "--remoteWrite.url=http://victoria_metrics:8428/api/v1/write"
 

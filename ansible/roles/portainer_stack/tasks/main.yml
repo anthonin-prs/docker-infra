@@ -12,3 +12,6 @@
     stack_compose: "{{ lookup('ansible.builtin.template', role_path + '/templates/' + item.file) }}"
     stack_env: "{{ lookup('ansible.builtin.file', role_path + '/files/' + item.env) | default('') }}"
   with_items: "{{ stack }}"
+
+- name: Connect reverse-proxy to networks
+  ansible.builtin.include_tasks: attach_nginx_to_net.yml

@@ -17,8 +17,8 @@ services:
     environment:
       APP_URL: "https://doc.anthonin.fr"
       REDIS_URL: "redis://docredis:6379"
-    ports:
-      - "3080:3000"
+    # ports:
+    #   - "3080:3000"
     restart: unless-stopped
     volumes:
       - docmost:/app/data/storage

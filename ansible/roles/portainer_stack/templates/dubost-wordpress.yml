@@ -21,8 +21,8 @@ services:
     image: wordpress:6.8.2-php8.3-apache
     container_name: dubost-wp
     restart: always
-    ports:
-      - "8085:80"
+    # ports:
+    #   - "8085:80"
     env_file:
       - stack.env
     environment:

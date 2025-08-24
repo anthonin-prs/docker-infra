@@ -1,7 +1,7 @@
 services:
   rallly_db:
     image: postgres:14.2
-    container_name: rally_db
+    container_name: rallly_db
     restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -15,12 +15,12 @@ services:
 
   rallly:
     image: lukevella/rallly:latest
-    container_name: rally
+    container_name: rallly
     restart: always
     depends_on:
       - rallly_db
-    ports:
-      - 3005:3000
+    # ports:
+    #   - 3005:3000
     env_file:
       - stack.env
 
