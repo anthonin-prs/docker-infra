@@ -43,19 +43,11 @@ services:
           basicAuth: false
           version: 1
           editable: false
-        - name: Prometheus
-          type: prometheus
+        - name: VictoriaMetrics
+          type: victoriametrics-metrics-datasource
           access: proxy
           isDefault: true
-          url: http://victoria_metrics:9090
-          jsonData:
-            httpMethod: POST
-            manageAlerts: true
-            prometheusType: Prometheus
-            prometheusVersion: 2.27.0
-            cacheLevel: 'High'
-            disableRecordingRules: false
-            incrementalQueryOverlapWindow: 10m
+          url: http://victoria_metrics:8428
         EOF
 
         /run.sh
