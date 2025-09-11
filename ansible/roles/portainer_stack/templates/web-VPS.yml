@@ -12,6 +12,7 @@ volumes:
   anthonin-fr-data:
   ebenolt-com-data:
   ip-ebe-data:
+  camille-carpentier-data:
   sutom-data:
   share-data:
   fileserver:
@@ -158,6 +159,14 @@ services:
     #   - "8091:8080"
     volumes:
       - ip-ebe-data:/var/www/html
+
+  camille-carpentier:
+    <<: *service_default
+    container_name: camille-carpentier
+    # ports:
+    #   - "8091:8080"
+    volumes:
+      - camille-carpentier-data:/var/www/html
 
   dubost-terrassement:
     <<: *service_default
