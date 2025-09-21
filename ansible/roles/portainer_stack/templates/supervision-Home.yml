@@ -14,7 +14,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana:12.1.0
+    image: grafana/grafana:12.3.0
     container_name: grafana
     restart: always
     volumes:

@@ -5,7 +5,7 @@ volumes:
 
 services:
   mailserver:
-    image: analogic/poste.io:2.5.5
+    image: analogic/poste.io:2.5.7
     container_name: mail_server
     restart: always
     network_mode: host

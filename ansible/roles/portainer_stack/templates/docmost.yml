@@ -7,7 +7,7 @@ volumes:
 
 services:
   docmost:
-    image: docmost/docmost:0.21.0
+    image: docmost/docmost:0.23.2
     container_name: docmost
     env_file:
       - stack.env

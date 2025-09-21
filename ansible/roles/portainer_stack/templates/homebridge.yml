@@ -5,7 +5,7 @@ volumes:
 
 services:
   homebridge:
-    image: homebridge/homebridge:latest
+    image: homebridge/homebridge:2025-09-21
     container_name: homebridge
     restart: always
     network_mode: host
